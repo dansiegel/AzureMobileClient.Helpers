@@ -9,6 +9,11 @@ namespace AzureMobileClient.Helpers
     public interface ICloudService 
     {
         /// <summary>
+        /// The MobileServiceClient used by the ICloud Service
+        /// </summary>
+        IMobileServiceClient Client { get; }
+
+        /// <summary>
         /// Logs the user in asynchronously
         /// </summary>
         Task<MobileServiceUser> LoginAsync();

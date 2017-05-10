@@ -14,7 +14,6 @@ namespace AzureMobileClient.Helpers
     /// </summary>
     public class AzureCloudService : ICloudService
     {
-        private IMobileServiceClient _client { get; }
         private ILoginProvider _loginProvider { get; }
         private List<AppServiceIdentity> identities = null;
 
@@ -25,20 +24,23 @@ namespace AzureMobileClient.Helpers
         {
             // This is a terrible design, but there isn't a way to update the Mobile Service Client's
             // Handlers after it's been initialized.
-            _client = new MobileServiceClient(options.AppServiceEndpoint, new AuthenticationDelegatingHandler(this));
+            Client = new MobileServiceClient(options.AppServiceEndpoint, new AuthenticationDelegatingHandler(this));
             _loginProvider = loginProvider;
         }
 
         /// <inheritDoc />
+        public IMobileServiceClient Client { get; }
+
+        /// <inheritDoc />
         public virtual async Task<MobileServiceUser> LoginAsync()
         {
-            _client.CurrentUser = _loginProvider.RetrieveTokenFromSecureStore();
-            if (_client.CurrentUser != null)
+            Client.CurrentUser = _loginProvider.RetrieveTokenFromSecureStore();
+            if (Client.CurrentUser != null)
             {
                 // User has previously been authenticated - try to Refresh the token
                 try
                 {
-                    var refreshed = await _client.RefreshUserAsync();
+                    var refreshed = await Client.RefreshUserAsync();
                     if (refreshed != null)
                     {
                         _loginProvider.StoreTokenInSecureStore(refreshed);
@@ -51,35 +53,35 @@ namespace AzureMobileClient.Helpers
                 }
             }
 
-            if (_client.CurrentUser != null && !IsTokenExpired(_client.CurrentUser.MobileServiceAuthenticationToken))
+            if (Client.CurrentUser != null && !IsTokenExpired(Client.CurrentUser.MobileServiceAuthenticationToken))
             {
                 // User has previously been authenticated, no refresh is required
-                return _client.CurrentUser;
+                return Client.CurrentUser;
             }
 
             // We need to ask for credentials at this point
-            await _loginProvider.LoginAsync(_client);
-            if (_client.CurrentUser != null)
+            await _loginProvider.LoginAsync(Client);
+            if (Client.CurrentUser != null)
             {
                 // We were able to successfully log in
-                _loginProvider.StoreTokenInSecureStore(_client.CurrentUser);
+                _loginProvider.StoreTokenInSecureStore(Client.CurrentUser);
             }
-            return _client.CurrentUser;
+            return Client.CurrentUser;
         }
 
         /// <inheritDoc />
         public virtual async Task LogoutAsync()
         {
-            if (_client.CurrentUser == null || _client.CurrentUser.MobileServiceAuthenticationToken == null)
+            if (Client.CurrentUser == null || Client.CurrentUser.MobileServiceAuthenticationToken == null)
                 return;
 
             // Log out of the identity provider (if required)
 
             // Invalidate the token on the mobile backend
-            var authUri = new Uri($"{_client.MobileAppUri}/.auth/logout");
+            var authUri = new Uri($"{Client.MobileAppUri}/.auth/logout");
             using (var httpClient = new HttpClient())
             {
-                httpClient.DefaultRequestHeaders.Add("X-ZUMO-AUTH", _client.CurrentUser.MobileServiceAuthenticationToken);
+                httpClient.DefaultRequestHeaders.Add("X-ZUMO-AUTH", Client.CurrentUser.MobileServiceAuthenticationToken);
                 await httpClient.GetAsync(authUri);
             }
 
@@ -87,26 +89,26 @@ namespace AzureMobileClient.Helpers
             _loginProvider.RemoveTokenFromSecureStore();
 
             // Remove the token from the MobileServiceClient
-            await _client.LogoutAsync();
+            await Client.LogoutAsync();
         }
 
         /// <inheritDoc />
         public virtual Task LoginAsync(User user)
         {
-            return _client.LoginAsync("custom", JObject.FromObject(user));
+            return Client.LoginAsync("custom", JObject.FromObject(user));
         }
 
         /// <inheritDoc />
         public virtual async Task<AppServiceIdentity> GetIdentityAsync()
         {
-            if (_client.CurrentUser == null || _client.CurrentUser?.MobileServiceAuthenticationToken == null)
+            if (Client.CurrentUser == null || Client.CurrentUser?.MobileServiceAuthenticationToken == null)
             {
                 throw new InvalidOperationException("Not Authenticated");
             }
 
             if (identities == null)
             {
-                identities = await _client.InvokeApiAsync<List<AppServiceIdentity>>("/.auth/me");
+                identities = await Client.InvokeApiAsync<List<AppServiceIdentity>>("/.auth/me");
             }
 
             if (identities.Count > 0)
