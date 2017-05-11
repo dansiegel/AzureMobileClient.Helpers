@@ -35,6 +35,8 @@ namespace AzureMobileClient.Helpers
                 throw new ArgumentNullException("The data table type cannot be null");
             }
 
+            System.Diagnostics.Debug.WriteLine($"AzureMobileClient.Helpers is defining a local store table for: {type.Name}");
+
             // Adopted from SQLite Store Generic Extensions
             var settings = new MobileServiceJsonSerializerSettings();
             var contract = settings.ContractResolver.ResolveContract(type) as JsonObjectContract;
