@@ -13,7 +13,7 @@ namespace AzureMobileClient.Helpers
         {
             if(type == null)
             {
-                throw new NullArgumentException(nameof(type));
+                throw new ArgumentNullException(nameof(type));
             }
 
             if(!type.GetTypeInfo().IsGenericType)
@@ -30,14 +30,14 @@ namespace AzureMobileClient.Helpers
             return container;
         }
 
-        public static IContainer RegisterSyncTableProvider(this IContainer container) =>
+        public static IContainer RegisterTableProvider(this IContainer container) =>
             container.RegisterSyncTableProvider(typeof(AzureCloudTable<>));
 
         public static IContainer RegisterTableProvider(this IContainer container, Type type)
         {
             if(type == null)
             {
-                throw new NullArgumentException(nameof(type));
+                throw new ArgumentNullException(nameof(type));
             }
 
             if(!type.GetTypeInfo().IsGenericType)

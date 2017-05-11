@@ -1,40 +1,22 @@
 using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 using Microsoft.WindowsAzure.MobileServices.Sync;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Reflection;
-using System.Linq;
-using Newtonsoft.Json.Serialization;
-using Newtonsoft.Json;
 
 namespace AzureMobileClient.Helpers
 {
-    /// <summary>
-    /// AzureCloudAppContext provides a base context for accessing your <see cref="ICloudTable" /> and
-    /// <see cref="ICloudSyncTable" />
-    /// </summary>
-    public abstract class AzureCloudAppContext
+    public abstract class AzureCloudServiceContext : AzureCloudService
     {
         /// <summary>
         /// Default App Context database name
         /// </summary>
         protected const string _offlineDbPath = "azureCloudAppContext.db";
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="AzureCloudAppContext(IMobileServiceClient,string)" />
-        /// </summary>
-        public AzureCloudAppContext(IMobileServiceClient client, string offlineDbPath = _offlineDbPath)
+        public AzureCloudServiceContext(IAzureCloudServiceOptions options, ILoginProvider loginProvider, string offlineDbPath = _offlineDbPath) 
+            : base(options, loginProvider)
         {
-            Client = client;
             OfflineDbPath = offlineDbPath;
             Initialize();
         }
-
-        /// <summary>
-        /// Gets the underlying IMobileServiceClient
-        /// </summary>
-        protected IMobileServiceClient Client { get; }
 
         /// <summary>
         /// Gets the Offline Database Path/Database name
