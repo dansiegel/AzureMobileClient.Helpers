@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Microsoft.WindowsAzure.MobileServices;
+using Newtonsoft.Json;
 
 namespace AzureMobileClient.Helpers
 {
@@ -20,6 +21,7 @@ namespace AzureMobileClient.Helpers
         /// <summary>
         /// Object Id
         /// </summary>
+        [JsonProperty("id")]
         public string Id
         {
             get { return _id; }
@@ -30,6 +32,7 @@ namespace AzureMobileClient.Helpers
         /// When the object was last updated
         /// </summary>
         [UpdatedAt]
+        [JsonProperty("updatedAt")]
         public DateTimeOffset? UpdatedAt
         {
             get { return _updatedAt; }
@@ -40,6 +43,7 @@ namespace AzureMobileClient.Helpers
         /// When the object was created
         /// </summary>
         [CreatedAt]
+        [JsonProperty("createdAt")]
         public DateTimeOffset? CreatedAt
         {
             get { return _createdAt; }
@@ -50,13 +54,18 @@ namespace AzureMobileClient.Helpers
         /// The Azure Mobile Service object Version
         /// </summary>
         [Version]
+        [JsonProperty("version")]
         public byte[] Version
         {
             get { return _version; }
             set { SetProperty(ref _version, value); }
         }
 
+        /// <summary>
+        /// Indicates whether the object was deleted
+        /// </summary>
         [Deleted]
+        [JsonProperty("deleted")]
         public bool Deleted
         {
             get { return _deleted; }
