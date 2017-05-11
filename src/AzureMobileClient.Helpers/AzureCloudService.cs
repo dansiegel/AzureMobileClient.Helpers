@@ -24,7 +24,12 @@ namespace AzureMobileClient.Helpers
         {
             // This is a terrible design, but there isn't a way to update the Mobile Service Client's
             // Handlers after it's been initialized.
-            Client = new MobileServiceClient(options.AppServiceEndpoint, new AuthenticationDelegatingHandler(this));
+            Client = new MobileServiceClient(options.AppServiceEndpoint, new AuthenticationDelegatingHandler(this))
+            {
+                LoginUriPrefix = options.LoginUriPrefix,
+                AlternateLoginHost = new Uri(options.AlternateLoginHost)
+            };
+            
             _loginProvider = loginProvider;
         }
 

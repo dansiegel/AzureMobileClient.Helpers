@@ -44,23 +44,7 @@ namespace AzureMobileClient.Helpers
         /// <inheritDoc />
         public virtual async Task<ICollection<T>> ReadAllItemsAsync()
         {
-            List<T> allItems = new List<T>();
-
-            var pageSize = 50;
-            var hasMore = true;
-            while (hasMore)
-            {
-                var pageOfItems = await table.Skip(allItems.Count).Take(pageSize).ToListAsync();
-                if (pageOfItems.Count > 0)
-                {
-                    allItems.AddRange(pageOfItems);
-                }
-                else
-                {
-                    hasMore = false;
-                }
-            }
-            return allItems;
+            return await table.ToListAsync();
         }
 
         /// <inheritDoc />

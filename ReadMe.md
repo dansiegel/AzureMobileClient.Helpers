@@ -23,8 +23,7 @@ protected override void RegisterTypes()
     // in IPlatformServices in your Platform Project. If you are using a custom auth provider, you may
     // be able to author an ILoginProvider from shared code.
     Container.Register<IAzureCloudServiceOptions, AwesomeAppCloudServiceOptions>(Reuse.Singleton);
-    Container.Register<ICloudService, AzureCloudService>(Reuse.Singleton)
-    );
+    Container.Register<ICloudService, AzureCloudService>(Reuse.Singleton);
 }
 ```
 
@@ -32,23 +31,22 @@ protected override void RegisterTypes()
 public class AwesomeAppCloudServiceOptions : IAzureCloudServiceOptions
 {
     public string AppServiceEndpoint => "https://yourappname.azurewebsites.net";
+    public string AlternateLoginHost => string.Empty;
+    public string LoginUriPrefix => string.Empty;
 }
 
-public class AwesomeAppCustomerAppContext
+public class AwesomeAppCustomerAppContext : DryIocCloudAppContext
 {
-    public MyAppClient(ICloudSyncTable<Customer> customers, ICloudSyncTable<Invoice> invoices,
-                       ICloudSyncTable<InvoiceItem> invoiceItems, ICloudTable<Feedback> feedback)
+    public MyAppClient(IContainer container)
+        : base(container, "myDatabaseName.db")
     {
-        Customers = customers;
-        Invoices = invoices;
-        InvoiceItems = invoiceItems;
-        Feedback = feedback;
+
     }
 
-    public ICloudSyncTable<Customer> Customers { get; }
-    public ICloudSyncTable<Invoice> Invoices { get; }
-    public ICloudSyncTable<InvoiceItem> InvoiceItems { get; }
-    public ICloudTable<Feedback> Feedback { get; }
+    public ICloudSyncTable<Customer> Customers => SyncTable<Customer>();
+    public ICloudSyncTable<Invoice> Invoices => SyncTable<Invoice>();
+    public ICloudSyncTable<InvoiceItem> InvoiceItems => SyncTable<InvoiceItem>();
+    public ICloudTable<Feedback> Feedback => Table<Feedback>();
 
 }
 
