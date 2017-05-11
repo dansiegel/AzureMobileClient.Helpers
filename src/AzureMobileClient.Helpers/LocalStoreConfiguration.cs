@@ -17,8 +17,8 @@ namespace AzureMobileClient.Helpers
             foreach(var pi in dataContextType.GetTypeInfo().DeclaredProperties)
             {
                 Type type = pi.PropertyType;
-                if(type.GetTypeInfo().IsGenericType && 
-                    (type.GetTypeInfo().GetGenericTypeDefinition() == typeof(ICloudSyncTable<>) || 
+                if(type.GetTypeInfo().IsGenericType &&
+                    (type.GetTypeInfo().GetGenericTypeDefinition() == typeof(ICloudSyncTable<>) ||
                      type.GetTypeInfo().GetGenericTypeDefinition() == typeof(IMobileServiceSyncTable<>)))
                 {
                     DefineTable(store, type.GetTypeInfo().GenericTypeArguments.FirstOrDefault());
@@ -50,7 +50,7 @@ namespace AzureMobileClient.Helpers
             var item = ConvertToJObject(settings, theObject);
 
             //// set default values so serialized version can be used to infer types
-            SetIdDefault(settings, type, item);
+            item[MobileServiceSystemColumns.Id] = String.Empty;
             SetNullDefault(contract, item);
 
             store.DefineTable(type.Name, item);
@@ -78,12 +78,6 @@ namespace AzureMobileClient.Helpers
             string json = JsonConvert.SerializeObject(theObject, settings);
             JObject item = JsonConvert.DeserializeObject<JObject>(json, settings);
             return item;
-        }
-
-        private static void SetIdDefault(MobileServiceJsonSerializerSettings settings, Type dataType, JObject item)
-        {
-            JsonProperty idProperty = settings.ContractResolver.ResolveIdProperty(dataType);
-            item[MobileServiceSystemColumns.Id] = String.Empty;
         }
 
         private static void SetNullDefault(JsonObjectContract contract, JObject item)
