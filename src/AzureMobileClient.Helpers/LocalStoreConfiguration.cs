@@ -9,10 +9,11 @@ using Newtonsoft.Json;
 
 namespace AzureMobileClient.Helpers
 {
-    public static class LocalStoreConfiguration
+    internal static class LocalStoreConfiguration
     {
-        public static void DefineTables(MobileServiceLocalStore store, Type dataContextType)
+        internal static bool DefineTables(MobileServiceLocalStore store, Type dataContextType)
         {
+            bool hasSyncTables = false;
             foreach(var pi in dataContextType.GetTypeInfo().DeclaredProperties)
             {
                 Type type = pi.PropertyType;
@@ -21,8 +22,10 @@ namespace AzureMobileClient.Helpers
                      type.GetTypeInfo().GetGenericTypeDefinition() == typeof(IMobileServiceSyncTable<>)))
                 {
                     DefineTable(store, type.GetTypeInfo().GenericTypeArguments.FirstOrDefault());
+                    hasSyncTables = true;
                 }
             }
+            return hasSyncTables;
         }
 
         private static void DefineTable(MobileServiceLocalStore store, Type type)

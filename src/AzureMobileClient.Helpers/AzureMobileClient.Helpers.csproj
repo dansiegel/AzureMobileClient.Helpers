@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
+    <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wpa81+wp8</PackageTargetFallback>
     <PackageTitle>Azure Mobile Client Helpers</PackageTitle>
     <Title>Azure Mobile Mobile Client Helpers</Title>
     <Authors>Dan Siegel</Authors>
@@ -25,6 +26,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Mobile.Client.SQLiteStore" Version="4.0.0-alpha-001" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
+    <PackageReference Include="Xam.Plugin.Connectivity" Version="2.3.0" />
   </ItemGroup>
 
 </Project>
