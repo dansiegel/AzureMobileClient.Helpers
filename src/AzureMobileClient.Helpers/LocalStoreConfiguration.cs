@@ -81,14 +81,7 @@ namespace AzureMobileClient.Helpers
         private static void SetIdDefault(MobileServiceJsonSerializerSettings settings, Type dataType, JObject item)
         {
             JsonProperty idProperty = settings.ContractResolver.ResolveIdProperty(dataType);
-            if (idProperty.PropertyType == typeof(long) || idProperty.PropertyType == typeof(int))
-            {
-                item[MobileServiceSystemColumns.Id] = 0;
-            }
-            else
-            {
-                item[MobileServiceSystemColumns.Id] = String.Empty;
-            }
+            item[MobileServiceSystemColumns.Id] = String.Empty;
         }
 
         private static void SetNullDefault(JsonObjectContract contract, JObject item)
