@@ -10,7 +10,7 @@ namespace AzureMobileClient.Helpers
     /// <summary>
     /// Base TableData object
     /// </summary>
-    public abstract class TableData : INotifyPropertyChanged
+    public abstract class EntityData : IEntityData, INotifyPropertyChanged
     {
         private string _id;
         private DateTimeOffset? _updatedAt;
@@ -18,9 +18,7 @@ namespace AzureMobileClient.Helpers
         private byte[] _version;
         private bool _deleted;
 
-        /// <summary>
-        /// Object Id
-        /// </summary>
+        /// <inheritDoc />
         [JsonProperty("id")]
         public string Id
         {
@@ -28,9 +26,7 @@ namespace AzureMobileClient.Helpers
             set { SetProperty(ref _id, value); }
         }
 
-        /// <summary>
-        /// When the object was last updated
-        /// </summary>
+        /// <inheritDoc />
         [UpdatedAt]
         [JsonProperty("updatedAt")]
         public DateTimeOffset? UpdatedAt
@@ -39,9 +35,7 @@ namespace AzureMobileClient.Helpers
             set { SetProperty(ref _updatedAt, value); }
         }
 
-        /// <summary>
-        /// When the object was created
-        /// </summary>
+        /// <inheritDoc />
         [CreatedAt]
         [JsonProperty("createdAt")]
         public DateTimeOffset? CreatedAt
@@ -50,9 +44,7 @@ namespace AzureMobileClient.Helpers
             set { SetProperty(ref _createdAt, value); }
         }
 
-        /// <summary>
-        /// The Azure Mobile Service object Version
-        /// </summary>
+        /// <inheritDoc />
         [Version]
         [JsonProperty("version")]
         public byte[] Version
@@ -61,9 +53,7 @@ namespace AzureMobileClient.Helpers
             set { SetProperty(ref _version, value); }
         }
 
-        /// <summary>
-        /// Indicates whether the object was deleted
-        /// </summary>
+        /// <inheritDoc />
         [Deleted]
         [JsonProperty("deleted")]
         public bool Deleted
@@ -106,5 +96,15 @@ namespace AzureMobileClient.Helpers
         /// <param name="propertyName">Property name.</param>
         protected virtual void RaisePropertyChanged([CallerMemberName]string propertyName = "") =>
          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        /// <inheritDoc />
+        public override bool Equals(object obj)
+        {
+            var entityB = obj as IEntityData;
+            return string.Equals(Id.Trim(), entityB.Id.Trim(), StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <inheritDoc />
+        public override int GetHashCode() => Id.ToLower().GetHashCode();
     }
 }

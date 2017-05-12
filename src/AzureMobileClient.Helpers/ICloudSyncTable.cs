@@ -7,7 +7,7 @@ namespace AzureMobileClient.Helpers
     /// <summary>
     /// ICloudSyncTable
     /// </summary>
-    public interface ICloudSyncTable<T> : ICloudTable<T> where T : TableData
+    public interface ICloudSyncTable<T> : ICloudTable<T> where T : EntityData
     {
         /// <summary>
         /// Pulls the latest data from the server and ensures proper syncing

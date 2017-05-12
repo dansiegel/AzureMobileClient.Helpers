@@ -52,11 +52,11 @@ namespace AzureMobileClient.Helpers
         /// <summary>
         /// Gets the SyncTable
         /// </summary>
-        public abstract ICloudSyncTable<T> SyncTable<T>() where T : TableData;
+        public abstract ICloudSyncTable<T> SyncTable<T>() where T : EntityData;
 
         /// <summary>
         /// Gets the Table
         /// </summary>
-        public abstract ICloudTable<T> Table<T>() where T : TableData;
+        public abstract ICloudTable<T> Table<T>() where T : EntityData;
     }
 }

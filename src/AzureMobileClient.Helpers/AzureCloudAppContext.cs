@@ -57,8 +57,8 @@ namespace AzureMobileClient.Helpers
             Client.SyncContext.InitializeAsync(store);
         }
 
-        public abstract ICloudSyncTable<T> SyncTable<T>() where T : TableData;
+        public abstract ICloudSyncTable<T> SyncTable<T>() where T : EntityData;
 
-        public abstract ICloudTable<T> Table<T>() where T : TableData;
+        public abstract ICloudTable<T> Table<T>() where T : EntityData;
     }
 }

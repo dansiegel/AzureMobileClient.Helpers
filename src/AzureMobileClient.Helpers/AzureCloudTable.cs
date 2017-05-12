@@ -7,7 +7,7 @@ namespace AzureMobileClient.Helpers
     /// <summary>
     /// AzureCloudTable
     /// </summary>
-    public class AzureCloudTable<T> : ICloudTable<T> where T : TableData
+    public class AzureCloudTable<T> : ICloudTable<T> where T : EntityData
     {
         private IMobileServiceClient _client { get; }
         private IMobileServiceTable<T> table { get; }

@@ -40,7 +40,7 @@ namespace AzureMobileClient.Helpers
             // Adopted from SQLite Store Generic Extensions
             var settings = new MobileServiceJsonSerializerSettings();
             var contract = settings.ContractResolver.ResolveContract(type) as JsonObjectContract;
-            if (contract.DefaultCreator == null)
+            if(contract.DefaultCreator == null)
             {
                 throw new ArgumentException($"The TableData type '{type.Name}' does not have parameterless constructor.");
             }
@@ -49,8 +49,8 @@ namespace AzureMobileClient.Helpers
             SetEnumDefault(contract, theObject);
             var item = ConvertToJObject(settings, theObject);
 
-            //// set default values so serialized version can be used to infer types
-            item[MobileServiceSystemColumns.Id] = String.Empty;
+            // set default values so serialized version can be used to infer types
+            item["id"] = String.Empty;
             SetNullDefault(contract, item);
 
             store.DefineTable(type.Name, item);
@@ -58,14 +58,14 @@ namespace AzureMobileClient.Helpers
 
         private static void SetEnumDefault(JsonObjectContract contract, object theObject)
         {
-            foreach (JsonProperty contractProperty in contract.Properties)
+            foreach(JsonProperty contractProperty in contract.Properties)
             {
-                if (contractProperty.PropertyType.GetTypeInfo().IsEnum)
+                if(contractProperty.PropertyType.GetTypeInfo().IsEnum)
                 {
                     object firstValue = Enum.GetValues(contractProperty.PropertyType)
                                             .Cast<object>()
                                             .FirstOrDefault();
-                    if (firstValue != null)
+                    if(firstValue != null)
                     {
                         contractProperty.ValueProvider.SetValue(theObject, firstValue);
                     }
@@ -82,18 +82,18 @@ namespace AzureMobileClient.Helpers
 
         private static void SetNullDefault(JsonObjectContract contract, JObject item)
         {
-            foreach (JProperty itemProperty in item.Properties().Where(i => i.Value.Type == JTokenType.Null))
+            foreach(JProperty itemProperty in item.Properties().Where(i => i.Value.Type == JTokenType.Null))
             {
                 JsonProperty contractProperty = contract.Properties[itemProperty.Name];
-                if (contractProperty.PropertyType == typeof(string) || contractProperty.PropertyType == typeof(Uri))
+                if(contractProperty.PropertyType == typeof(string) || contractProperty.PropertyType == typeof(Uri))
                 {
                     item[itemProperty.Name] = String.Empty;
                 }
-                else if (contractProperty.PropertyType == typeof(byte[]))
+                else if(contractProperty.PropertyType == typeof(byte[]))
                 {
                     item[itemProperty.Name] = new byte[0];
                 }
-                else if (contractProperty.PropertyType.GetTypeInfo().IsGenericType && contractProperty.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                else if(contractProperty.PropertyType.GetTypeInfo().IsGenericType && contractProperty.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
                 {
                     item[itemProperty.Name] = new JValue(Activator.CreateInstance(contractProperty.PropertyType.GenericTypeArguments[0]));
                 }
