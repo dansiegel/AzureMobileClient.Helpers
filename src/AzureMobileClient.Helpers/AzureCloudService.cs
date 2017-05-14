@@ -24,12 +24,19 @@ namespace AzureMobileClient.Helpers
         {
             // This is a terrible design, but there isn't a way to update the Mobile Service Client's
             // Handlers after it's been initialized.
-            Client = new MobileServiceClient(options.AppServiceEndpoint, new AuthenticationDelegatingHandler(this))
+            Client = new MobileServiceClient(options.AppServiceEndpoint, new AuthenticationDelegatingHandler(this));
+
+            if(!string.IsNullOrWhiteSpace(options.LoginUriPrefix))
             {
-                LoginUriPrefix = options.LoginUriPrefix,
-                AlternateLoginHost = new Uri(options.AlternateLoginHost)
+                Client.LoginUriPrefix = options.LoginUriPrefix;
+            }
+
+            if(!string.IsNullOrWhiteSpace(options.AlternateLoginHost)
+               && Uri.TryCreate(options.AlternateLoginHost, UriKind.Absolute, out Uri altHost))
+            {
+                Client.AlternateLoginHost = altHost;
             };
-            
+
             _loginProvider = loginProvider;
         }
 
@@ -40,25 +47,25 @@ namespace AzureMobileClient.Helpers
         public virtual async Task<MobileServiceUser> LoginAsync()
         {
             Client.CurrentUser = _loginProvider.RetrieveTokenFromSecureStore();
-            if (Client.CurrentUser != null)
+            if(Client.CurrentUser != null)
             {
                 // User has previously been authenticated - try to Refresh the token
                 try
                 {
                     var refreshed = await Client.RefreshUserAsync();
-                    if (refreshed != null)
+                    if(refreshed != null)
                     {
                         _loginProvider.StoreTokenInSecureStore(refreshed);
                         return refreshed;
                     }
                 }
-                catch (Exception refreshException)
+                catch(Exception refreshException)
                 {
                     Debug.WriteLine($"Could not refresh token: {refreshException.Message}");
                 }
             }
 
-            if (Client.CurrentUser != null && !IsTokenExpired(Client.CurrentUser.MobileServiceAuthenticationToken))
+            if(Client.CurrentUser != null && !IsTokenExpired(Client.CurrentUser.MobileServiceAuthenticationToken))
             {
                 // User has previously been authenticated, no refresh is required
                 return Client.CurrentUser;
@@ -66,7 +73,7 @@ namespace AzureMobileClient.Helpers
 
             // We need to ask for credentials at this point
             await _loginProvider.LoginAsync(Client);
-            if (Client.CurrentUser != null)
+            if(Client.CurrentUser != null)
             {
                 // We were able to successfully log in
                 _loginProvider.StoreTokenInSecureStore(Client.CurrentUser);
@@ -77,14 +84,14 @@ namespace AzureMobileClient.Helpers
         /// <inheritDoc />
         public virtual async Task LogoutAsync()
         {
-            if (Client.CurrentUser == null || Client.CurrentUser.MobileServiceAuthenticationToken == null)
+            if(Client.CurrentUser == null || Client.CurrentUser.MobileServiceAuthenticationToken == null)
                 return;
 
             // Log out of the identity provider (if required)
 
             // Invalidate the token on the mobile backend
             var authUri = new Uri($"{Client.MobileAppUri}/.auth/logout");
-            using (var httpClient = new HttpClient())
+            using(var httpClient = new HttpClient())
             {
                 httpClient.DefaultRequestHeaders.Add("X-ZUMO-AUTH", Client.CurrentUser.MobileServiceAuthenticationToken);
                 await httpClient.GetAsync(authUri);
@@ -106,17 +113,17 @@ namespace AzureMobileClient.Helpers
         /// <inheritDoc />
         public virtual async Task<AppServiceIdentity> GetIdentityAsync()
         {
-            if (Client.CurrentUser == null || Client.CurrentUser?.MobileServiceAuthenticationToken == null)
+            if(Client.CurrentUser == null || Client.CurrentUser?.MobileServiceAuthenticationToken == null)
             {
                 throw new InvalidOperationException("Not Authenticated");
             }
 
-            if (identities == null)
+            if(identities == null)
             {
                 identities = await Client.InvokeApiAsync<List<AppServiceIdentity>>("/.auth/me");
             }
 
-            if (identities.Count > 0)
+            if(identities.Count > 0)
                 return identities[0];
             return null;
         }
@@ -131,7 +138,7 @@ namespace AzureMobileClient.Helpers
 
             // Undo the URL encoding.
             jwt = jwt.Replace('-', '+').Replace('_', '/');
-            switch (jwt.Length % 4)
+            switch(jwt.Length % 4)
             {
                 case 0: break;
                 case 2: jwt += "=="; break;
@@ -156,4 +163,4 @@ namespace AzureMobileClient.Helpers
             return (expire < DateTime.UtcNow);
         }
     }
-} 
+}
