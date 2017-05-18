@@ -8,15 +8,17 @@
     <Authors>Dan Siegel</Authors>
     <Owners>Dan Siegel</Owners>
     <Description>Provides a reusable set of abstractions and classes for using the Microsoft Azure Mobile Client. This library was inspired by the samples originally provided by Adrian Hall, with some modifications to provide a little more flexibility.</Description>
+    <PackageReleaseNotes>Initial release.</PackageReleaseNotes>
     <PackageTags>microsoft;windows;azure;mobile;apps;services;dryioc;</PackageTags>
     <PackageProjectUrl>https://github.com/dansiegel/AzureMobileClient.Helpers</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/dansiegel/AzureMobileClient.Helpers/blob/master/LICENSE</PackageLicenseUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageOutputPath>../../Build</PackageOutputPath>
     <RepositoryUrl>https://github.com/dansiegel/AzureMobileClient.Helpers</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <VersionPrefix>4.0.0</VersionPrefix>
     <VersionSuffix Condition=" '$(BUILD_BUILDNUMBER)' != '' ">CI-$(BUILD_BUILDNUMBER)</VersionSuffix>
-    <VersionSuffix Condition=" '$(PREVIEW_NUMBER)' != '' ">pre-$(PREVIEW_NUMBER)</VersionSuffix>
+    <VersionSuffix Condition=" '$(PREVIEW_NUMBER)' != '' ">pre$(PREVIEW_NUMBER)</VersionSuffix>
     <GenerateDocumentationFile Condition=" '$(Configuration)' == 'Release' ">true</GenerateDocumentationFile>
     <!-- Workaround until Xamarin supports PPDB -->
     <DebugType>full</DebugType>
