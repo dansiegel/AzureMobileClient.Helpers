@@ -4,6 +4,11 @@ AzureMobileClient.Helpers is a lightweight toolkit for using the Microsoft Azure
 
 Note that this library has been aligned with the Microsoft.Azure.Mobile.Client and is offered using NetStandard1.4 and as such is not compatible with traditional PCL projects. For this reason, it is recommended that you check out the [Prism Templates](https://github.com/dansiegel/Prism-Templates) I have available for `dotnet new` which use a NetStandard1.4 common library for the shared code.
 
+| Package | Version |
+|---------|---------|
+| [AzureMobileClient.Helpers][11] | [![21]][11] |
+| [AzureMobileClient.Helpers.DryIoc][12] | [![22]][12] |
+
 ## Setting up the library for Dependency Injection
 
 The following examples are based on using DryIoc in a Prism Application:
@@ -38,6 +43,7 @@ public class AwesomeAppCloudServiceOptions : IAzureCloudServiceOptions
 public class AwesomeAppCustomerAppContext : DryIocCloudAppContext
 {
     public MyAppClient(IContainer container)
+        // We can optionally pass in a database name
         : base(container, "myDatabaseName.db")
     {
 
@@ -50,26 +56,26 @@ public class AwesomeAppCustomerAppContext : DryIocCloudAppContext
 
 }
 
-public class Customer : TableData
+public class Customer : EntityData
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Email { get; set; }
 }
 
-public class Invoice : TableData
+public class Invoice : EntityData
 {
     public string CustomerId { get; set; }
 }
 
-public class InvoiceItem : TableData
+public class InvoiceItem : EntityData
 {
     public string InvoiceId { get; set; }
     public string ItemId { get; set; }
     public int Quantity { get; set; }
 }
 
-public class Feedback : TableData
+public class Feedback : EntityData
 {
     public string Message { get; set; }
     public string Status { get; set; }
@@ -77,3 +83,8 @@ public class Feedback : TableData
 ```
 
 
+[11]: https://www.nuget.org/packages/AzureMobileClient.Helpers
+[12]: https://www.nuget.org/packages/AzureMobileClient.Helpers.DryIoc
+
+[21]: https://img.shields.io/nuget/vpre/AzureMobileClient.Helpers.svg
+[22]: https://img.shields.io/nuget/vpre/AzureMobileClient.Helpers.DryIoc.svg
