@@ -95,7 +95,7 @@ namespace AzureMobileClient.Helpers
         /// </summary>
         /// <param name="propertyName">Property name.</param>
         protected virtual void RaisePropertyChanged([CallerMemberName]string propertyName = "") =>
-         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         /// <inheritDoc />
         public override bool Equals(object obj)

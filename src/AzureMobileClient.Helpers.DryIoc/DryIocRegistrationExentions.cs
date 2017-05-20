@@ -4,11 +4,20 @@ using System.Reflection;
 
 namespace AzureMobileClient.Helpers
 {
+    /// <summary>
+    /// Provides registration extensions for DryIoc
+    /// <summary>
     public static class DryIocRegistrationExtensions
     {
+        /// <summary>
+        /// Registers the default <see cref="AzureCloudSyncTable<>" /> implementation for sync tables
+        /// </summary>
         public static IContainer RegisterSyncTableProvider(this IContainer container) =>
             container.RegisterSyncTableProvider(typeof(AzureCloudSyncTable<>));
 
+        /// <summary>
+        /// Registers your custom implementation of <see cref="ICloudSyncTable<>" />
+        /// <summary>
         public static IContainer RegisterSyncTableProvider(this IContainer container, Type type)
         {
             if(type == null)
@@ -18,7 +27,7 @@ namespace AzureMobileClient.Helpers
 
             if(!type.GetTypeInfo().IsGenericType)
             {
-                throw new ArgumentException("The specified type must a Generic type");
+                throw new ArgumentException("The specified type must be a Generic type");
             }
 
             if(type.GetTypeInfo().GetGenericTypeDefinition() != typeof(ICloudSyncTable<>))
@@ -30,9 +39,15 @@ namespace AzureMobileClient.Helpers
             return container;
         }
 
+        /// <summary>
+        /// Registers the default <see cref="AzureCloudTable<>" /> table provider
+        /// </summary>
         public static IContainer RegisterTableProvider(this IContainer container) =>
             container.RegisterSyncTableProvider(typeof(AzureCloudTable<>));
 
+        /// <summary>
+        /// Registers your custom implementation of <see cref="ICloudTable<>" />
+        /// </summary>
         public static IContainer RegisterTableProvider(this IContainer container, Type type)
         {
             if(type == null)
@@ -42,7 +57,7 @@ namespace AzureMobileClient.Helpers
 
             if(!type.GetTypeInfo().IsGenericType)
             {
-                throw new ArgumentException("The specified type must a Generic type");
+                throw new ArgumentException("The specified type must be a Generic type");
             }
 
             if(type.GetTypeInfo().GetGenericTypeDefinition() != typeof(ICloudTable<>))
