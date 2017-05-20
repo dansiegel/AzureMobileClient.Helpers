@@ -4,7 +4,10 @@ using Microsoft.WindowsAzure.MobileServices.Sync;
 
 namespace AzureMobileClient.Helpers
 {
-    public abstract class AzureCloudServiceContext : AzureCloudService
+    /// <summary>
+    /// Provides a base implementation for <see cref="ICloudService" /> and <see cref="ICloudAppContext" />
+    /// </summary>
+    public abstract class AzureCloudServiceContext : AzureCloudService, ICloudAppContext
     {
         /// <summary>
         /// Default App Context database name
@@ -49,14 +52,10 @@ namespace AzureMobileClient.Helpers
             }
         }
 
-        /// <summary>
-        /// Gets the SyncTable
-        /// </summary>
-        public abstract ICloudSyncTable<T> SyncTable<T>() where T : EntityData;
+        /// <inheritDoc />
+        public abstract ICloudSyncTable<T> SyncTable<T>() where T : IEntityData;
 
-        /// <summary>
-        /// Gets the Table
-        /// </summary>
-        public abstract ICloudTable<T> Table<T>() where T : EntityData;
+        /// <inheritDoc />
+        public abstract ICloudTable<T> Table<T>() where T : IEntityData;
     }
 }

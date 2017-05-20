@@ -6,7 +6,7 @@ namespace AzureMobileClient.Helpers
     /// <summary>
     /// An ICloudTable of a TableData type
     /// </summary>
-    public interface ICloudTable<T> where T : EntityData
+    public interface ICloudTable<T> where T : IEntityData
     {
         /// <summary>
         /// Creates a new Item asynchronously 

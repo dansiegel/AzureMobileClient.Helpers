@@ -1,12 +1,6 @@
 using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 using Microsoft.WindowsAzure.MobileServices.Sync;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Reflection;
-using System.Linq;
-using Newtonsoft.Json.Serialization;
-using Newtonsoft.Json;
 
 namespace AzureMobileClient.Helpers
 {
@@ -14,7 +8,7 @@ namespace AzureMobileClient.Helpers
     /// AzureCloudAppContext provides a base context for accessing your <see cref="ICloudTable" /> and
     /// <see cref="ICloudSyncTable" />
     /// </summary>
-    public abstract class AzureCloudAppContext
+    public abstract class AzureCloudAppContext : ICloudAppContext
     {
         /// <summary>
         /// Default App Context database name
@@ -57,8 +51,10 @@ namespace AzureMobileClient.Helpers
             Client.SyncContext.InitializeAsync(store);
         }
 
-        public abstract ICloudSyncTable<T> SyncTable<T>() where T : EntityData;
+        /// <inheritDoc />
+        public abstract ICloudSyncTable<T> SyncTable<T>() where T : IEntityData;
 
-        public abstract ICloudTable<T> Table<T>() where T : EntityData;
+        /// <inheritDoc />
+        public abstract ICloudTable<T> Table<T>() where T : IEntityData;
     }
 }
