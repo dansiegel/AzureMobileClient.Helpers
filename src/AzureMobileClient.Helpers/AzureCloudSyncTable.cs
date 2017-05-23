@@ -81,7 +81,7 @@ namespace AzureMobileClient.Helpers
         private DateTimeOffset? LastSync;
 
         /// <inheritDoc />
-        public virtual async Task Sync(CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async Task SyncAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             if(!CrossConnectivity.Current.IsConnected) return;
 
@@ -108,7 +108,7 @@ namespace AzureMobileClient.Helpers
         {
             if(e.IsConnected && (LastSync == null || DateTimeOffset.Now - LastSync.Value > TimeSpan.FromSeconds(10)))
             {
-                await Sync();
+                await SyncAsync();
             }
         }
     }

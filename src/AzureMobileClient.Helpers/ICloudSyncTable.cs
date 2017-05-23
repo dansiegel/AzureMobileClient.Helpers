@@ -22,6 +22,6 @@ namespace AzureMobileClient.Helpers
         /// <summary>
         /// Synchronize the table with the cloud store
         /// </summary>
-        Task Sync(CancellationToken cancellationToken = default(CancellationToken));
+        Task SyncAsync(CancellationToken cancellationToken = default(CancellationToken));
     }
 }
