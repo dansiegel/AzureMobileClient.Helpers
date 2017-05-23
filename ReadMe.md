@@ -9,6 +9,11 @@ Note that this library has been aligned with the Microsoft.Azure.Mobile.Client a
 | [AzureMobileClient.Helpers][11] | [![21]][11] |
 | [AzureMobileClient.Helpers.DryIoc][12] | [![22]][12] |
 
+## Resources
+
+- [Getting Started Tutorial](https://dansiegel.net/post/2017/05/23/azure-mobile-client-helpers)
+- [Todo Demo](https://github.com/dansiegel/TodoDemo)
+
 ## Setting up the library for Dependency Injection
 
 The following examples are based on using DryIoc in a Prism Application:
@@ -21,14 +26,19 @@ protected override void RegisterTypes()
     Container.Register<AwesomeAppCustomerAppContext>(Reuse.Singleton);
 
     // If you are not using Authentication
-    Container.RegisterInstance<IMobileServiceClient>(new MobileServiceClient(AppSettings.ApiEndpoint));
+    Container.UseInstance<IMobileServiceClient>(new MobileServiceClient(AppConstants.AppServiceEndpoint));
 
     // If you are using Authentication
     // If using Facebook or some other 3rd Party OAuth provider be sure to register ILoginProvider
     // in IPlatformServices in your Platform Project. If you are using a custom auth provider, you may
     // be able to author an ILoginProvider from shared code.
-    Container.Register<IAzureCloudServiceOptions, AwesomeAppCloudServiceOptions>(Reuse.Singleton);
-    Container.Register<ICloudService, AzureCloudService>(Reuse.Singleton);
+    // Container.Register<IAzureCloudServiceOptions, TodoDemoServiceContextOptions>(Reuse.Singleton);
+    var dataContext = new AppDataContext(Container);
+    //Container.UseInstance<ICloudService>(dataContext);
+    Container.UseInstance<IAppDataContext>(dataContext);
+    Container.UseInstance<ICloudAppContext>(dataContext);
+    // Container.Register<IMobileServiceClient>(reuse: Reuse.Singleton,
+    //                                         made: Made.Of(() => Arg.Of<ICloudService>().Client));
 }
 ```
 
