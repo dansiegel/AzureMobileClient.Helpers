@@ -26,11 +26,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DryIoc.dll" Version="2.10.7" />
+    <PackageReference Include="DryIoc.dll" Version="2.11.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../AzureMobileClient.Helpers/AzureMobileClient.Helpers.csproj" />
+    <ProjectReference Include="..\AzureMobileClient.Helpers\AzureMobileClient.Helpers.csproj" />
   </ItemGroup>
-
 </Project>
