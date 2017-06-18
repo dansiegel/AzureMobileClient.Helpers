@@ -11,7 +11,7 @@ namespace AzureMobileClient.Helpers.Accounts
     {
         string Id { get; set; }
         string Name { get; set; }
-
+        bool IsValid { get; }
         Task<bool> CheckValidity();
     }
 }

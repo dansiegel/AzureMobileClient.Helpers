@@ -2,10 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Runtime.Serialization.Json;
+using Android.App;
 using Android.Content;
+using Android.OS;
 using Java.Security;
 using Javax.Crypto;
+using AzureMobileClient.Helpers.Platforms.Android;
 
 namespace AzureMobileClient.Helpers.Accounts
 {
@@ -16,7 +20,19 @@ namespace AzureMobileClient.Helpers.Accounts
 
         static readonly object lockStore = new object();
 
+        ActivityLifecycleCallbackManager activityLifecycleManager { get; }
+
         Dictionary<string, string> store = null;
+
+        public SecureStore(Android.App.Application app)
+        {
+            activityLifecycleManager = new ActivityLifecycleCallbackManager();
+            app.RegisterActivityLifecycleCallbacks(activityLifecycleManager);
+        }
+
+        public Android.Support.V4.App.FragmentActivity CurrentActivity => 
+            activityLifecycleManager?.CurrentActivity;
+
 
         public string this[string key]
         {
@@ -26,8 +42,7 @@ namespace AzureMobileClient.Helpers.Accounts
                 {
                     if (store == null)
                     {
-                        var activity = SocialAuth.CurrentActivity;
-                        store = Load(activity) ?? new Dictionary<string, string>();
+                        store = Load(CurrentActivity) ?? new Dictionary<string, string>();
                     }
 
                     if (!store.ContainsKey(key))
@@ -38,19 +53,17 @@ namespace AzureMobileClient.Helpers.Accounts
             }
             set
             {
-                var activity = SocialAuth.CurrentActivity;
-
                 lock (lockStore)
                 {
                     if (store == null)
-                        store = Load(activity) ?? new Dictionary<string, string>();
+                        store = Load(CurrentActivity) ?? new Dictionary<string, string>();
 
                     if (store.ContainsKey(key))
                         store[key] = value;
                     else
                         store.Add(key, value);
 
-                    Save(activity, store);
+                    Save(CurrentActivity, store);
                 }
             }
         }

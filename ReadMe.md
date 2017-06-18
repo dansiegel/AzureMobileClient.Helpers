@@ -32,13 +32,16 @@ protected override void RegisterTypes()
     // If using Facebook or some other 3rd Party OAuth provider be sure to register ILoginProvider
     // in IPlatformServices in your Platform Project. If you are using a custom auth provider, you may
     // be able to author an ILoginProvider from shared code.
-    // Container.Register<IAzureCloudServiceOptions, TodoDemoServiceContextOptions>(Reuse.Singleton);
+    Container.Register<IAzureCloudServiceOptions, TodoDemoServiceContextOptions>(Reuse.Singleton);
     var dataContext = new AppDataContext(Container);
-    //Container.UseInstance<ICloudService>(dataContext);
+    Container.UseInstance<ICloudService>(dataContext);
     Container.UseInstance<IAppDataContext>(dataContext);
     Container.UseInstance<ICloudAppContext>(dataContext);
-    // Container.Register<IMobileServiceClient>(reuse: Reuse.Singleton,
-    //                                         made: Made.Of(() => Arg.Of<ICloudService>().Client));
+    Container.Register<IMobileServiceClient>(reuse: Reuse.Singleton,
+                                             made: Made.Of(() => Arg.Of<ICloudService>().Client));
+    // Note that this will require you to register ISecureStore
+    Container.Register<IAccountStore,AccountStore>(Reuse.Singleton);
+    Container.Register<ILoginProvider,LoginProvider(Reuse.Singleton);
 }
 ```
 
@@ -89,6 +92,50 @@ public class Feedback : EntityData
 {
     public string Message { get; set; }
     public string Status { get; set; }
+}
+```
+
+## Login Provider
+
+This library tries not to make any direct assumptions on how you should authenticate. There is however an integrated Account Store in the library reducing problems you may otherwise face. While the Account Store is Platform Independent, it requires an implementation of ISecureStore to manage that actual IO transactions. Currently the library has support for iOS and Android with a platform registerable version of the SecureStore class. Note that Android will require the additional step of registering the active Application. 
+
+*Android*
+
+```cs
+public class AndroidInitializer : IPlatformInitializer
+{
+    private Application CurrentApplication { get; }
+
+    public AndroidInitializer(Application application)
+    {
+        CurrentApplication = application;
+    }
+
+    public void RegisterTypes(IContainer container)
+    {
+        container.UseInstance(CurrentApplicaiton);
+        container.Register<ISecureStore, SecureStore>(Reuse.Singleton);
+    }
+}
+
+public class MainActivity : FormsAppCompatActivity
+{
+    protected override void OnCreate(Bundle savedInstanceState)
+    {
+        LoadApplication(new App(new AndroidInitializer(Application)));
+    }
+}
+```
+
+*iOS*
+
+```cs
+public class iOSInitializer : IPlatformInitializer
+{
+    public void RegisterTypes(IContainer container)
+    {
+        container.Register<ISecureStore,SecureStore>(Reuse.Singleton);
+    }
 }
 ```
 

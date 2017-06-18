@@ -20,7 +20,9 @@ namespace AzureMobileClient.Helpers.Accounts
             set { SetStringValue("name", value); }
         }
 
-        public abstract Task<bool> CheckValidity();
+        public abstract bool IsValid { get; }
+
+        public virtual Task<bool> CheckValidity() => Task.FromResult(IsValid);
 
         protected string GetStringValue(string key, string defaultValue = null)
         {

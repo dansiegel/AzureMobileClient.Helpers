@@ -1,8 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <!--<TargetFramework>netstandard1.4</TargetFramework>-->
-    <TargetFrameworks>netstandard1.4;xamarinios;monoandroid;</TargetFrameworks>
+    <TargetFrameworks>netstandard1.4;MonoAndroid71;Xamarin.iOS10;</TargetFrameworks>
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wpa81+wp8</PackageTargetFallback>
     <PackageTitle>Azure Mobile Client Helpers</PackageTitle>
     <Title>Azure Mobile Mobile Client Helpers</Title>
@@ -26,9 +25,35 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <PackOnBuild>true</PackOnBuild>
   </PropertyGroup>
+  
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'MonoAndroid71' ">
+    <TargetFrameworkIdentifier>MonoAndroid</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
+    <LanguageTargets>$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets</LanguageTargets>
+    <AndroidResgenNamespace>Xamarin.Auth._MobileServices</AndroidResgenNamespace>
+    <MonoAndroidResourcePrefix>..\External\Xamarin.Auth\source\Xamarin.Auth.XamarinAndroid\Resources</MonoAndroidResourcePrefix>
+    <DefineConstants>$(DefineConstants);PLATFORM_ANDROID;</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'Xamarin.iOS10' ">
+    <TargetFrameworkIdentifier>Xamarin.iOS</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
+    <LanguageTargets>$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets</LanguageTargets>
+    <DefineConstants>$(DefineConstants);PLATFORM_IOS;</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'uap10.0' ">
+    <NugetTargetMoniker>UAP,Version=v10.0</NugetTargetMoniker>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
+    <TargetFrameworkIdentifier>.NETCore</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <LanguageTargets>$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets</LanguageTargets>
+  </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="Xam.Plugin.Connectivity" Version="2.3.0" />
     <PackageReference Include="Microsoft.Azure.Mobile.Client.SQLiteStore" Version="4.0.0" />
     <PackageReference Include="MSBuild.Sdk.Extras" Version="1.0.3" PrivateAssets="all" />
@@ -39,14 +64,27 @@
     <None Include="Platforms/**/*.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'xamarinios' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.iOS10' ">
     <None Remove="Platforms/iOS/*.cs" />
     <Compile Include="Platforms/iOS/*.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'monoandroid' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid71' ">
     <Remove Remove="Platforms/Android/*.cs" />
     <Compile Include="Platforms/Android/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid71' ">
+    <PackageReference Include="Xamarin.Android.Support.Annotations" Version="25.3.1" />
+    <PackageReference Include="Xamarin.Android.Support.Compat" Version="25.3.1" />
+    <PackageReference Include="Xamarin.Android.Support.Core.UI" Version="25.3.1" />
+    <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="25.3.1" />
+    <PackageReference Include="Xamarin.Android.Support.Fragment" Version="25.3.1" />
+    <PackageReference Include="Xamarin.Android.Support.Media.Compat" Version="25.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Platforms\Android\ActivityLifecycleCallbackManager.cs" />
   </ItemGroup>
 
   <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
