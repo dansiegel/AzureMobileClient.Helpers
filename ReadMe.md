@@ -9,6 +9,12 @@ Note that this library has been aligned with the Microsoft.Azure.Mobile.Client a
 | [AzureMobileClient.Helpers][11] | [![21]][11] |
 | [AzureMobileClient.Helpers.DryIoc][12] | [![22]][12] |
 
+## Support
+
+If this project helped you reduce time to develop and made your app better, please help support this project.
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/dansiegel)
+
 ## Resources
 
 - [Getting Started Tutorial](https://dansiegel.net/post/2017/05/23/azure-mobile-client-helpers)
