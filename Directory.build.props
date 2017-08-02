@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <Product>$(AssemblyName) ($(TargetFramework))</Product>
+    <Authors>Dan Siegel</Authors>
+    <Owners>Dan Siegel</Owners>
+    <PackageProjectUrl>https://github.com/dansiegel/AzureMobileClient.Helpers</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/dansiegel/AzureMobileClient.Helpers/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <RepositoryUrl>https://github.com/dansiegel/AzureMobileClient.Helpers</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)Artifacts</PackageOutputPath>
+    <PackageOutputPath Condition=" '$(BUILD_ARTIFACTSTAGINGDIRECTORY)' != '' ">$(BUILD_ARTIFACTSTAGINGDIRECTORY)</PackageOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+  </PropertyGroup>
+</Project>
