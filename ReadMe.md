@@ -68,6 +68,11 @@ public class AwesomeAppCustomerAppContext : DryIocCloudAppContext
 
     }
 
+    /*
+     * NOTE: This is architected to be similar to Entity Framework in that
+     * the CloudAppContext will look for properties that are ICloudSyncTable<>
+     * so that it can register the Model type with the SQLite Store.
+     */
     public ICloudSyncTable<Customer> Customers => SyncTable<Customer>();
     public ICloudSyncTable<Invoice> Invoices => SyncTable<Invoice>();
     public ICloudSyncTable<InvoiceItem> InvoiceItems => SyncTable<InvoiceItem>();
