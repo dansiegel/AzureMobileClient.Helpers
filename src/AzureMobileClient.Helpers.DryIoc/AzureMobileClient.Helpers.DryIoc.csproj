@@ -8,10 +8,6 @@
     <Description>Provides a reusable set of abstractions and classes for using the Microsoft Azure Mobile Client. This library was inspired by the samples originally provided by Adrian Hall, with some modifications to provide a little more flexibility.</Description>
     <PackageReleaseNotes>Initial release.</PackageReleaseNotes>
     <PackageTags>microsoft;windows;azure;mobile;apps;services;dryioc;</PackageTags>
-    <VersionPrefix>4.0.0</VersionPrefix>
-    <VersionPrefix Condition=" '$(BUILD_BUILDNUMBER)' != '' And '$(RELEASEBUILD)' != 'True' ">$(VersionPrefix).$(BUILD_BUILDNUMBER)</VersionPrefix>
-    <VersionSuffix Condition=" '$(BUILD_BUILDNUMBER)' != '' And '$(RELEASEBUILD)' != 'True' ">ci</VersionSuffix>
-    <VersionSuffix Condition=" '$(PREVIEW_NUMBER)' != '' ">pre$(PREVIEW_NUMBER)</VersionSuffix>
     <!-- Workaround until Xamarin supports PPDB -->
     <DebugType>full</DebugType>
   </PropertyGroup>

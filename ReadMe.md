@@ -4,10 +4,10 @@ AzureMobileClient.Helpers is a lightweight toolkit for using the Microsoft Azure
 
 Note that this library has been aligned with the Microsoft.Azure.Mobile.Client and is offered using NetStandard1.4 and as such is not compatible with traditional PCL projects. For this reason, it is recommended that you check out the [Prism Templates](https://github.com/dansiegel/Prism-Templates) I have available for `dotnet new` which use a NetStandard1.4 common library for the shared code.
 
-| Package | Version |
-|---------|---------|
-| [AzureMobileClient.Helpers][11] | [![21]][11] |
-| [AzureMobileClient.Helpers.DryIoc][12] | [![22]][12] |
+| Package | Version | MyGet |
+|---------|---------|-------|
+| [AzureMobileClient.Helpers][HelpersNuGet] | [![HelpersShield]][HelpersNuGet] | [![HelpersMyGetShield]][HelpersMyGet] |
+| [AzureMobileClient.Helpers.DryIoc][HelpersDryIocNuGet] | [![HelpersDryIocShield]][HelpersDryIocNuGet] | [![HelpersDryIocMyGetShield]][HelpersDryIocMyGet] |
 
 ## Support
 
@@ -151,8 +151,14 @@ public class iOSInitializer : IPlatformInitializer
 ```
 
 
-[11]: https://www.nuget.org/packages/AzureMobileClient.Helpers
-[12]: https://www.nuget.org/packages/AzureMobileClient.Helpers.DryIoc
+[HelpersNuGet]: https://www.nuget.org/packages/AzureMobileClient.Helpers
+[HelpersDryIocNuGet]: https://www.nuget.org/packages/AzureMobileClient.Helpers.DryIoc
 
-[21]: https://img.shields.io/nuget/vpre/AzureMobileClient.Helpers.svg
-[22]: https://img.shields.io/nuget/vpre/AzureMobileClient.Helpers.DryIoc.svg
+[HelpersShield]: https://img.shields.io/nuget/vpre/AzureMobileClient.Helpers.svg
+[HelpersDryIocShield]: https://img.shields.io/nuget/vpre/AzureMobileClient.Helpers.DryIoc.svg
+
+[HelpersMyGet]: https://www.myget.org/feed/azurehelpers/package/nuget/AzureMobileClient.Helpers
+[HelpersDryIocMyGet]: https://www.myget.org/feed/azurehelpers/package/nuget/AzureMobileClient.Helpers.DryIoc
+
+[HelpersMyGetShield]: https://img.shields.io/myget/azurehelpers/vpre/AzureMobileClient.Helpers.svg
+[HelpersDryIocMyGetShield]: https://img.shields.io/myget/azurehelpers/vpre/AzureMobileClient.Helpers.DryIoc.svg

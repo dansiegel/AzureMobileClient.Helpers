@@ -8,20 +8,8 @@
     <Description>Provides a reusable set of abstractions and classes for using the Microsoft Azure Mobile Client. This library was inspired by the samples originally provided by Adrian Hall, with some modifications to provide a little more flexibility.</Description>
     <PackageReleaseNotes>Adding integrated Account Store. Removes problems with having to take a PCL dependency that results in BCL mapping problems.</PackageReleaseNotes>
     <PackageTags>microsoft;windows;azure;mobile;apps;services;</PackageTags>
-    <PackageProjectUrl>https://github.com/dansiegel/AzureMobileClient.Helpers</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/dansiegel/AzureMobileClient.Helpers/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageOutputPath>../../Build</PackageOutputPath>
-    <RepositoryUrl>https://github.com/dansiegel/AzureMobileClient.Helpers</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <VersionPrefix>4.0.1</VersionPrefix>
-    <VersionPrefix Condition=" '$(BUILD_BUILDNUMBER)' != '' And '$(RELEASEBUILD)' != 'True' ">$(VersionPrefix).$(BUILD_BUILDNUMBER)</VersionPrefix>
-    <VersionSuffix Condition=" '$(BUILD_BUILDNUMBER)' != '' And '$(RELEASEBUILD)' != 'True' ">ci</VersionSuffix>
-    <VersionSuffix Condition=" '$(PREVIEW_NUMBER)' != '' ">pre$(PREVIEW_NUMBER)</VersionSuffix>
     <!-- Workaround until Xamarin supports PPDB -->
     <DebugType>full</DebugType>
-    <DefaultLanguage>en-US</DefaultLanguage>
-    <PackOnBuild>true</PackOnBuild>
   </PropertyGroup>
   
   <PropertyGroup Condition=" '$(TargetFramework)' == 'MonoAndroid71' ">
@@ -53,7 +41,7 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="Xam.Plugin.Connectivity" Version="2.3.0" />
-    <PackageReference Include="Microsoft.Azure.Mobile.Client.SQLiteStore" Version="4.0.0" />
+    <PackageReference Include="Microsoft.Azure.Mobile.Client.SQLiteStore" Version="4.0.1" />
     <PackageReference Include="MSBuild.Sdk.Extras" Version="1.0.3" PrivateAssets="all" />
   </ItemGroup>
 
