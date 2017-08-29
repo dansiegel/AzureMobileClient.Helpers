@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.4;MonoAndroid71;Xamarin.iOS10;</TargetFrameworks> 
+    <TargetFrameworks>netstandard1.4;MonoAndroid71;Xamarin.iOS10;</TargetFrameworks>
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wpa81+wp8</PackageTargetFallback>
     <PackageTitle>Azure Mobile Client Helpers</PackageTitle>
     <Title>Azure Mobile Mobile Client Helpers</Title>
@@ -59,19 +59,6 @@
     <Remove Remove="Platforms/Android/*.cs" />
     <Compile Include="Platforms/Android/*.cs" />
   </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid71' ">
-    <PackageReference Include="Xamarin.Android.Support.Annotations" Version="25.3.1" />
-    <PackageReference Include="Xamarin.Android.Support.Compat" Version="25.3.1" />
-    <PackageReference Include="Xamarin.Android.Support.Core.UI" Version="25.3.1" />
-    <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="25.3.1" />
-    <PackageReference Include="Xamarin.Android.Support.Fragment" Version="25.3.1" />
-    <PackageReference Include="Xamarin.Android.Support.Media.Compat" Version="25.3.1" />
-  </ItemGroup> 
-
-  <ItemGroup>
-    <None Include="Platforms\Android\ActivityLifecycleCallbackManager.cs" />
-  </ItemGroup> 
 
   <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 
