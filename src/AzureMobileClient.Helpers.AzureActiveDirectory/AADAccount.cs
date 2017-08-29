@@ -92,6 +92,30 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
             set => SetStringValue("iss");
         }
 
+        public string TrustFrameworkPolicy
+        {
+            get => GetStringValue("tfp");
+            set => SetStringValue("tfp");
+        }
+
+        public DateTime? IssuedAt
+        {
+            get => GetDateTimeValue("iat");
+            set => SetDateTimeValue("iat");
+        }
+
+        public DateTime? NotBefore
+        {
+            get => GetDateTimeValue("nbf");
+            set => SetDateTimeValue("nbf");
+        }
+
+        public string Subject
+        {
+            get => GetStringValue("sub");
+            set => SetStringValue("sub");
+        }
+
         public override bool IsValid => AccessTokenExpires != null &&
                                         DateTime.Now.ToLocalTime() < AccessTokenExpires.Value.ToLocalTime();
     }
