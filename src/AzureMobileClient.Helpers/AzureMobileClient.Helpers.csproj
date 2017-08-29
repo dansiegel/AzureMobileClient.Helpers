@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.4;MonoAndroid71;Xamarin.iOS10;</TargetFrameworks>
+    <TargetFrameworks>netstandard1.4;MonoAndroid71;Xamarin.iOS10;</TargetFrameworks> 
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wpa81+wp8</PackageTargetFallback>
     <PackageTitle>Azure Mobile Client Helpers</PackageTitle>
     <Title>Azure Mobile Mobile Client Helpers</Title>
@@ -11,7 +11,7 @@
     <!-- Workaround until Xamarin supports PPDB -->
     <DebugType>full</DebugType>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition=" '$(TargetFramework)' == 'MonoAndroid71' ">
     <TargetFrameworkIdentifier>MonoAndroid</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
@@ -40,9 +40,9 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-    <PackageReference Include="Xam.Plugin.Connectivity" Version="2.3.0" />
     <PackageReference Include="Microsoft.Azure.Mobile.Client.SQLiteStore" Version="4.0.1" />
-    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.0.3" PrivateAssets="all" />
+    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.0.9" PrivateAssets="all" />
+    <PackageReference Include="Xam.Plugin.Connectivity" Version="3.0.3-beta123" />
   </ItemGroup>
 
   <ItemGroup>
@@ -67,11 +67,11 @@
     <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="25.3.1" />
     <PackageReference Include="Xamarin.Android.Support.Fragment" Version="25.3.1" />
     <PackageReference Include="Xamarin.Android.Support.Media.Compat" Version="25.3.1" />
-  </ItemGroup>
+  </ItemGroup> 
 
   <ItemGroup>
     <None Include="Platforms\Android\ActivityLifecycleCallbackManager.cs" />
-  </ItemGroup>
+  </ItemGroup> 
 
   <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 

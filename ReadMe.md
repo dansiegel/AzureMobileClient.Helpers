@@ -7,7 +7,11 @@ Note that this library has been aligned with the Microsoft.Azure.Mobile.Client a
 | Package | Version | MyGet |
 |---------|---------|-------|
 | [AzureMobileClient.Helpers][HelpersNuGet] | [![HelpersShield]][HelpersNuGet] | [![HelpersMyGetShield]][HelpersMyGet] |
+| [AzureMobileClient.Helpers.Autofac][HelpersAutofacNuGet] | [![HelpersAutofacShield]][HelpersAutofacNuGet] | [![HelpersAutofacMyGetShield]][HelpersAutofacMyGet] |
 | [AzureMobileClient.Helpers.DryIoc][HelpersDryIocNuGet] | [![HelpersDryIocShield]][HelpersDryIocNuGet] | [![HelpersDryIocMyGetShield]][HelpersDryIocMyGet] |
+| [AzureMobileClient.Helpers.SimpleInjector][HelpersSimpleInjectorNuGet] | [![HelpersSimpleInjectorShield]][HelpersSimpleInjectorNuGet] | [![HelpersSimpleInjectorMyGetShield]][HelpersSimpleInjectorMyGet] |
+| [AzureMobileClient.Helpers.Unity][HelpersUnityNuGet] | [![HelpersUnityShield]][HelpersUnityNuGet] | [![HelpersUnityMyGetShield]][HelpersUnityMyGet] |
+| [AzureMobileClient.Helpers.AzureActiveDirectory][HelpersAADNuGet] | [![HelpersAADShield]][HelpersAADNuGet] | [![HelpersAADMyGetShield]][HelpersAADMyGet] |
 
 ## Support
 
@@ -152,13 +156,29 @@ public class iOSInitializer : IPlatformInitializer
 
 
 [HelpersNuGet]: https://www.nuget.org/packages/AzureMobileClient.Helpers
+[HelpersAutofacNuGet]: https://www.nuget.org/packages/AzureMobileClient.Helpers.Autofac
 [HelpersDryIocNuGet]: https://www.nuget.org/packages/AzureMobileClient.Helpers.DryIoc
+[HelpersSimpleInjectorNuGet]: https://www.nuget.org/packages/AzureMobileClient.Helpers.SimpleInjector
+[HelpersUnityNuGet]: https://www.nuget.org/packages/AzureMobileClient.Helpers.Unity
+[HelpersAADNuGet]: https://www.nuget.org/packages/AzureMobileClient.Helpers.AzureActiveDirectory
 
 [HelpersShield]: https://img.shields.io/nuget/vpre/AzureMobileClient.Helpers.svg
+[HelpersAutofacShield]: https://img.shields.io/nuget/vpre/AzureMobileClient.Helpers.Autofac.svg
 [HelpersDryIocShield]: https://img.shields.io/nuget/vpre/AzureMobileClient.Helpers.DryIoc.svg
+[HelpersSimpleInjectorShield]: https://img.shields.io/nuget/vpre/AzureMobileClient.Helpers.SimpleInjector.svg
+[HelpersUnityShield]: https://img.shields.io/nuget/vpre/AzureMobileClient.Helpers.Unity.svg
+[HelpersAADShield]: https://img.shields.io/nuget/vpre/AzureMobileClient.Helpers.AzureActiveDirectory.svg
 
 [HelpersMyGet]: https://www.myget.org/feed/azurehelpers/package/nuget/AzureMobileClient.Helpers
+[HelpersAutofacMyGet]: https://www.myget.org/feed/azurehelpers/package/nuget/AzureMobileClient.Helpers.Autofac
 [HelpersDryIocMyGet]: https://www.myget.org/feed/azurehelpers/package/nuget/AzureMobileClient.Helpers.DryIoc
+[HelpersSimpleInjectorMyGet]: https://www.myget.org/feed/azurehelpers/package/nuget/AzureMobileClient.Helpers.SimpleInjector
+[HelpersUnityMyGet]: https://www.myget.org/feed/azurehelpers/package/nuget/AzureMobileClient.Helpers.Unity
+[HelpersAADMyGet]: https://www.myget.org/feed/azurehelpers/package/nuget/AzureMobileClient.Helpers.AzureActiveDirectory
 
 [HelpersMyGetShield]: https://img.shields.io/myget/azurehelpers/vpre/AzureMobileClient.Helpers.svg
+[HelpersAutofacMyGetShield]: https://img.shields.io/myget/azurehelpers/vpre/AzureMobileClient.Helpers.Autofac.svg
 [HelpersDryIocMyGetShield]: https://img.shields.io/myget/azurehelpers/vpre/AzureMobileClient.Helpers.DryIoc.svg
+[HelpersSimpleInjectorMyGetShield]: https://img.shields.io/myget/azurehelpers/vpre/AzureMobileClient.Helpers.SimpleInjector.svg
+[HelpersUnityMyGetShield]: https://img.shields.io/myget/azurehelpers/vpre/AzureMobileClient.Helpers.Unity.svg
+[HelpersAADMyGetShield]: https://img.shields.io/myget/azurehelpers/vpre/AzureMobileClient.Helpers.AzureActiveDirectory.svg
