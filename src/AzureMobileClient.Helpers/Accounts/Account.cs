@@ -24,7 +24,7 @@ namespace AzureMobileClient.Helpers.Accounts
 
         public virtual Task<bool> CheckValidity() => Task.FromResult(IsValid);
 
-        protected string GetStringValue(string key, string defaultValue = null)
+        protected virtual string GetStringValue(string key, string defaultValue = null)
         {
             string r;
             if (!TryGetValue(key, out r))
@@ -32,7 +32,7 @@ namespace AzureMobileClient.Helpers.Accounts
             return r;
         }
 
-        protected void SetStringValue(string key, string value = null)
+        protected virtual void SetStringValue(string key, string value = null)
         {
             if (ContainsKey(key))
                 this[key] = value;
@@ -40,7 +40,7 @@ namespace AzureMobileClient.Helpers.Accounts
                 Add(key, value);
         }
 
-        protected DateTime? GetDateTimeValue(string key, DateTime? defaultValue = null)
+        protected virtual DateTime? GetDateTimeValue(string key, DateTime? defaultValue = null)
         {
             DateTime r;
 
@@ -49,13 +49,16 @@ namespace AzureMobileClient.Helpers.Accounts
             if (string.IsNullOrEmpty(str))
                 return defaultValue;
 
+            if (long.TryParse(str, out long timestamp))
+                return new DateTime(1970, 1, 1).AddSeconds(timestamp);
+
             if (DateTime.TryParse(str, out r))
                 return r;
 
             return defaultValue;
         }
 
-        protected void SetDateTimeValue(string key, DateTime? value = null)
+        protected virtual void SetDateTimeValue(string key, DateTime? value = null)
         {
             if (!value.HasValue)
                 SetStringValue(key);
@@ -67,7 +70,7 @@ namespace AzureMobileClient.Helpers.Accounts
             }
         }
 
-        protected long? GetLongValue(string key, long? defaultValue = null)
+        protected virtual long? GetLongValue(string key, long? defaultValue = null)
         {
             long r;
 
@@ -82,7 +85,7 @@ namespace AzureMobileClient.Helpers.Accounts
             return defaultValue;
         }
 
-        protected void SetLongValue(string key, long? value = null)
+        protected virtual void SetLongValue(string key, long? value = null)
         {
             if (!value.HasValue)
                 SetStringValue(key);
@@ -90,7 +93,7 @@ namespace AzureMobileClient.Helpers.Accounts
                 SetStringValue(key, value.Value.ToString());
         }
 
-        protected bool? GetBoolValue(string key, bool? defaultValue = null)
+        protected virtual bool? GetBoolValue(string key, bool? defaultValue = null)
         {
             bool r;
 
@@ -105,7 +108,7 @@ namespace AzureMobileClient.Helpers.Accounts
             return defaultValue;
         }
 
-        protected void SetBoolValue(string key, bool? value = null)
+        protected virtual void SetBoolValue(string key, bool? value = null)
         {
             if (!value.HasValue)
                 SetStringValue(key);
