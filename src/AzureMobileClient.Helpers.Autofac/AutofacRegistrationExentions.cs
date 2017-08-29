@@ -20,22 +20,23 @@ namespace AzureMobileClient.Helpers
         /// <summary>
         public static ContainerBuilder RegisterSyncTableProvider(this ContainerBuilder builder, Type type)
         {
-            if(type == null)
+            if (type == null)
             {
                 throw new ArgumentNullException(nameof(type));
             }
 
-            if(!type.GetTypeInfo().IsGenericType)
+            if (!type.GetTypeInfo().IsGenericType)
             {
                 throw new ArgumentException("The specified type must be a Generic type");
             }
 
-            if(type.GetTypeInfo().GetGenericTypeDefinition() != typeof(ICloudSyncTable<>))
+            if (type.GetTypeInfo().GetGenericTypeDefinition() != typeof(ICloudSyncTable<>))
             {
                 throw new ArgumentException("The specified type must be of type 'ICloudSyncTable<>'");
             }
 
-            builder.Register(typeof(ICloudSyncTable<>), type);
+            builder.RegisterType(type).As(typeof(ICloudSyncTable<>)).SingleInstance();
+
             return builder;
         }
 
@@ -50,22 +51,23 @@ namespace AzureMobileClient.Helpers
         /// </summary>
         public static ContainerBuilder RegisterTableProvider(this ContainerBuilder builder, Type type)
         {
-            if(type == null)
+            if (type == null)
             {
                 throw new ArgumentNullException(nameof(type));
             }
 
-            if(!type.GetTypeInfo().IsGenericType)
+            if (!type.GetTypeInfo().IsGenericType)
             {
                 throw new ArgumentException("The specified type must be a Generic type");
             }
 
-            if(type.GetTypeInfo().GetGenericTypeDefinition() != typeof(ICloudTable<>))
+            if (type.GetTypeInfo().GetGenericTypeDefinition() != typeof(ICloudTable<>))
             {
                 throw new ArgumentException("The specified type must be of type 'ICloudTable<>'");
             }
 
-            builder.RegisterType(typeof(ICloudTable<>)).As(type);
+            builder.RegisterType(type).As(typeof(ICloudTable<>)).SingleInstance();
+
             return builder;
         }
     }
