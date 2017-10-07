@@ -17,6 +17,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="Microsoft.Azure.Mobile.Client.SQLiteStore" Version="4.0.1" />
     <PackageReference Include="MSBuild.Sdk.Extras" Version="1.0.9" PrivateAssets="all" />
+    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.8" />
     <PackageReference Include="Xam.Plugin.Connectivity" Version="3.0.3" />
   </ItemGroup>
 
