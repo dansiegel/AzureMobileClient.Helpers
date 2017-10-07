@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wpa81+wp8</PackageTargetFallback>
+    <PackageTitle>Azure Mobile Client Helpers for Azure Active Directory</PackageTitle>
+    <Title>Azure Mobile Mobile Client Helpers for Azure Active Directory</Title>
   </PropertyGroup>
 
   <ItemGroup>
