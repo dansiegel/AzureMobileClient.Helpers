@@ -17,7 +17,7 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
 
         protected IAADOptions _options { get; }
 
-        public AADLoginProvider(IPublicClientApplication client, UIParent parent, IAADOptions options, IAccountStore accountStore)
+        public AADLoginProvider(IPublicClientApplication client, UIParent parent, IAADOptions options)
             : base()
         {
             _client = client;
