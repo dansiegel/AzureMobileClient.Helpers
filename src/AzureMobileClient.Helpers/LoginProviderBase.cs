@@ -5,34 +5,38 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure.MobileServices;
 using AzureMobileClient.Helpers.Accounts;
 using AzureMobileClient.Helpers.Accounts.OAuth;
+using Akavache;
+using Akavache.Sqlite3;
+using System.Reactive.Linq;
+using System.Linq;
 
 namespace AzureMobileClient.Helpers
 {
-    public abstract class LoginProviderBase : ILoginProvider
+    public abstract class LoginProviderBase<TAccount> : ILoginProvider<TAccount>
+        where TAccount : IAccount
     {
         public abstract string AccountServiceName { get; }
 
-        public IAccountStore AccountStore { get; }
+        //public IAccountStore AccountStore { get; }
 
-        public LoginProviderBase(IAccountStore accountStore)
+        protected ISecureBlobCache SecureStore { get; }
+
+        public LoginProviderBase()
         {
-            AccountStore = accountStore;
+            SecureStore = BlobCache.Secure;
         }
 
         public abstract Task<MobileServiceUser> LoginAsync(IMobileServiceClient client);
 
-        public virtual void RemoveTokenFromSecureStore()
+        public virtual async Task RemoveTokenFromSecureStore()
         {
-            var accounts = AccountStore.FindAccounts(AccountServiceName);
-            foreach(var account in accounts)
-            {
-                AccountStore.DeleteAccount(AccountServiceName, account.Id);
-            }
+            await SecureStore.InvalidateObject<OAuth2Account>(AccountServiceName);
         }
 
-        public virtual MobileServiceUser RetrieveTokenFromSecureStore()
+        public virtual async Task<MobileServiceUser> RetrieveTokenFromSecureStore()
         {
-            var account = AccountStore.FindAnyAccount(AccountServiceName) as OAuth2Account;
+            var account = await SecureStore.GetObject<OAuth2Account>(AccountServiceName);
+
             if(account?.IsValid ?? false)
             {
                 return new MobileServiceUser(account.Id)
@@ -44,17 +48,21 @@ namespace AzureMobileClient.Helpers
             return null;
         }
 
-        public virtual void StoreTokenInSecureStore(MobileServiceUser user) =>
-            SaveAccountInSecureStore(new OAuth2Account()
-            {
-                Id = user.UserId,
-                AccessToken = user.MobileServiceAuthenticationToken
-            });
+        public abstract Task StoreTokenInSecureStore(MobileServiceUser user);
+        //await SaveAccountInSecureStore((TAccount)new OAuth2Account()
+        //{
+        //    Id = user.UserId,
+        //    AccessToken = user.MobileServiceAuthenticationToken
+        //});
 
-        public virtual IAccount RetrieveOAuthAccountFromSecureStore() =>
-            AccountStore.FindAnyAccount(AccountServiceName);
+        public virtual async Task<TAccount> RetrieveOAuthAccountFromSecureStore()
+        {
+            return await SecureStore.GetObject<TAccount>(AccountServiceName);
+        }
 
-        public virtual void SaveAccountInSecureStore(IAccount account) =>
-            AccountStore.SaveAccount(AccountServiceName, account);
+        public virtual async Task SaveAccountInSecureStore(TAccount account)
+        {
+            await SecureStore.InsertObject(AccountServiceName, account);
+        }
     }
 }

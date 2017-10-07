@@ -1,12 +1,14 @@
 using SimpleInjector;
 using Microsoft.WindowsAzure.MobileServices;
+using AzureMobileClient.Helpers.Accounts;
 
 namespace AzureMobileClient.Helpers
 {
     /// <summary>
     /// Provides a base implementation for <see cref="ICloudService" /> and <see cref="ICloudAppContext" />
     /// </summary>
-    public abstract class SimpleInjectorCloudServiceContext : AzureCloudServiceContext
+    public abstract class SimpleInjectorCloudServiceContext<TAccount> : AzureCloudServiceContext<TAccount>
+        where TAccount : IAccount
     {
         /// <summary>
         /// Gets the Resolving Container
@@ -16,7 +18,7 @@ namespace AzureMobileClient.Helpers
         /// <summary>
         /// Constructs a new <see cref="SimpleInjectorCloudServiceContext" />
         /// </summary>
-        public SimpleInjectorCloudServiceContext(Container container, IAzureCloudServiceOptions options, ILoginProvider loginProvider, string offlineDbPath = _offlineDbPath)
+        public SimpleInjectorCloudServiceContext(Container container, IAzureCloudServiceOptions options, ILoginProvider<TAccount> loginProvider, string offlineDbPath = _offlineDbPath)
             : base(options, loginProvider, offlineDbPath)
         {
             Container = container;

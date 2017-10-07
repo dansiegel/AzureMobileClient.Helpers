@@ -1,4 +1,5 @@
 using Autofac;
+using AzureMobileClient.Helpers.Accounts;
 using Microsoft.WindowsAzure.MobileServices; 
 
 namespace AzureMobileClient.Helpers
@@ -6,7 +7,8 @@ namespace AzureMobileClient.Helpers
     /// <summary>
     /// Provides a base implementation for <see cref="ICloudService" /> and <see cref="ICloudAppContext" />
     /// </summary>
-    public abstract class DryIocCloudServiceContext : AzureCloudServiceContext
+    public abstract class DryIocCloudServiceContext<TAccount> : AzureCloudServiceContext<TAccount>
+        where TAccount : IAccount
     {
         /// <summary>
         /// Gets the Resolving Context
@@ -16,7 +18,7 @@ namespace AzureMobileClient.Helpers
         /// <summary>
         /// Constructs a new <see cref="DryIocCloudServiceContext" />
         /// </summary>
-        public DryIocCloudServiceContext(IComponentContext context, IAzureCloudServiceOptions options, ILoginProvider loginProvider, string offlineDbPath = _offlineDbPath)
+        public DryIocCloudServiceContext(IComponentContext context, IAzureCloudServiceOptions options, ILoginProvider<TAccount> loginProvider, string offlineDbPath = _offlineDbPath)
             : base(options, loginProvider, offlineDbPath)
         {
             Context = context;

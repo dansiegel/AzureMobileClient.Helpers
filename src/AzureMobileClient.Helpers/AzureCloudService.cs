@@ -6,21 +6,37 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.MobileServices;
 using Newtonsoft.Json.Linq;
+using AzureMobileClient.Helpers.Accounts.OAuth;
+using System.Linq;
+using AzureMobileClient.Helpers.Accounts;
 
 namespace AzureMobileClient.Helpers
 {
     /// <summary>
     /// AzureCloudService implementation of <see cref="ICloudService" />
     /// </summary>
-    public class AzureCloudService : ICloudService
+    public class AzureCloudService<TAccount> : ICloudService
+        where TAccount : IAccount
     {
-        private ILoginProvider _loginProvider { get; }
+        private ILoginProvider<TAccount> _loginProvider { get; }
         private List<AppServiceIdentity> identities = null;
+
+        private static HttpMessageHandler[] GetHandlers(IAzureCloudServiceOptions options, ICloudService cloudService)
+        {
+            var defaultHandler = new List<HttpMessageHandler>
+            {
+                new AuthenticationDelegatingHandler(cloudService)
+            };
+            if (!options.Handlers?.Any() ?? true) return defaultHandler.ToArray();
+
+            defaultHandler.AddRange(options.Handlers);
+            return defaultHandler.ToArray();
+        }
 
         /// <summary>
         /// Initializes a new instance of <see cref="AzureCloudService" />
         /// </summary>
-        public AzureCloudService(IAzureCloudServiceOptions options, ILoginProvider loginProvider)
+        public AzureCloudService(IAzureCloudServiceOptions options, ILoginProvider<TAccount> loginProvider)
         {
             // This is a terrible design, but there isn't a way to update the Mobile Service Client's
             // Handlers after it's been initialized.
@@ -46,7 +62,7 @@ namespace AzureMobileClient.Helpers
         /// <inheritDoc />
         public virtual async Task<MobileServiceUser> LoginAsync()
         {
-            Client.CurrentUser = _loginProvider.RetrieveTokenFromSecureStore();
+            Client.CurrentUser = await _loginProvider.RetrieveTokenFromSecureStore();
             if(Client.CurrentUser != null)
             {
                 // User has previously been authenticated - try to Refresh the token
@@ -55,7 +71,7 @@ namespace AzureMobileClient.Helpers
                     var refreshed = await Client.RefreshUserAsync();
                     if(refreshed != null)
                     {
-                        _loginProvider.StoreTokenInSecureStore(refreshed);
+                        await _loginProvider.StoreTokenInSecureStore(refreshed);
                         return refreshed;
                     }
                 }
@@ -76,7 +92,7 @@ namespace AzureMobileClient.Helpers
             if(Client.CurrentUser != null)
             {
                 // We were able to successfully log in
-                _loginProvider.StoreTokenInSecureStore(Client.CurrentUser);
+                await _loginProvider.StoreTokenInSecureStore(Client.CurrentUser);
             }
             return Client.CurrentUser;
         }
@@ -98,7 +114,7 @@ namespace AzureMobileClient.Helpers
             }
 
             // Remove the token from the cache
-            _loginProvider.RemoveTokenFromSecureStore();
+            await _loginProvider.RemoveTokenFromSecureStore();
 
             // Remove the token from the MobileServiceClient
             await Client.LogoutAsync();

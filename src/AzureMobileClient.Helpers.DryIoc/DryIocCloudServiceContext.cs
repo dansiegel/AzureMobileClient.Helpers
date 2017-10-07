@@ -1,3 +1,4 @@
+using AzureMobileClient.Helpers.Accounts;
 using DryIoc;
 using Microsoft.WindowsAzure.MobileServices; 
 
@@ -6,7 +7,8 @@ namespace AzureMobileClient.Helpers
     /// <summary>
     /// Provides a base implementation for <see cref="ICloudService" /> and <see cref="ICloudAppContext" />
     /// </summary>
-    public abstract class DryIocCloudServiceContext : AzureCloudServiceContext
+    public abstract class DryIocCloudServiceContext<TAccount> : AzureCloudServiceContext<TAccount>
+        where TAccount : IAccount
     {
         /// <summary>
         /// Gets the Resolving Container
@@ -16,7 +18,7 @@ namespace AzureMobileClient.Helpers
         /// <summary>
         /// Constructs a new <see cref="DryIocCloudServiceContext" />
         /// </summary>
-        public DryIocCloudServiceContext(IContainer container, IAzureCloudServiceOptions options, ILoginProvider loginProvider, string offlineDbPath = _offlineDbPath)
+        public DryIocCloudServiceContext(IContainer container, IAzureCloudServiceOptions options, ILoginProvider<TAccount> loginProvider, string offlineDbPath = _offlineDbPath)
             : base(options, loginProvider, offlineDbPath)
         {
             Container = container;

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AzureMobileClient.Helpers;
 using AzureMobileClient.Helpers.Accounts;
 using Microsoft.Identity.Client;
 using Microsoft.WindowsAzure.MobileServices;
@@ -11,7 +9,7 @@ using Newtonsoft.Json.Linq;
 
 namespace AzureMobileClient.Helpers.AzureActiveDirectory
 {
-    public class AADLoginProvider : LoginProviderBase
+    public abstract class AADLoginProvider : LoginProviderBase<AADAccount>
     {
         protected IPublicClientApplication _client { get; }
 
@@ -19,31 +17,15 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
 
         protected IAADOptions _options { get; }
 
-        public override string AccountServiceName => throw new NotImplementedException();
-
         public AADLoginProvider(IPublicClientApplication client, UIParent parent, IAADOptions options, IAccountStore accountStore)
-            : base(accountStore)
+            : base()
         {
             _client = client;
             _options = options;
             _parent = parent;
         }
 
-        public override MobileServiceUser RetrieveTokenFromSecureStore()
-        {
-            var account = AccountStore.FindAnyAccount(AccountServiceName) as AADAccount;
-            if (account?.IsValid ?? false)
-            {
-                return new MobileServiceUser(account.Id)
-                {
-                    MobileServiceAuthenticationToken = account.AccessToken
-                };
-            }
-
-            return null;
-        }
-
-        public override void StoreTokenInSecureStore(MobileServiceUser user) =>
+        public override Task StoreTokenInSecureStore(MobileServiceUser user) =>
             SaveAccountInSecureStore(new AADAccount(user.MobileServiceAuthenticationToken));
 
         public override async Task<MobileServiceUser> LoginAsync(IMobileServiceClient client)
@@ -52,7 +34,7 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
             var zumoPayload = new JObject();
             zumoPayload["access_token"] = accessToken;
             var user = await client.LoginAsync(MobileServiceAuthenticationProvider.WindowsAzureActiveDirectory, zumoPayload);
-            StoreTokenInSecureStore(user);
+            await StoreTokenInSecureStore(user);
             return user;
         }
 

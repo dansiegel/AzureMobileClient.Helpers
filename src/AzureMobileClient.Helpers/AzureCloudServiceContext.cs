@@ -1,3 +1,4 @@
+using AzureMobileClient.Helpers.Accounts;
 using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 using Microsoft.WindowsAzure.MobileServices.Sync;
@@ -7,7 +8,8 @@ namespace AzureMobileClient.Helpers
     /// <summary>
     /// Provides a base implementation for <see cref="ICloudService" /> and <see cref="ICloudAppContext" />
     /// </summary>
-    public abstract class AzureCloudServiceContext : AzureCloudService, ICloudAppContext
+    public abstract class AzureCloudServiceContext<TAccount> : AzureCloudService<TAccount>, ICloudAppContext
+        where TAccount : IAccount
     {
         /// <summary>
         /// Default App Context database name
@@ -17,7 +19,7 @@ namespace AzureMobileClient.Helpers
         /// <summary>
         /// Initializes a new instance of the <see cref="AzureCloudServiceContext(IAzureCloudServiceOptions, ILoginProvider, string)" />
         /// </summary>
-        public AzureCloudServiceContext(IAzureCloudServiceOptions options, ILoginProvider loginProvider, string offlineDbPath = _offlineDbPath) 
+        public AzureCloudServiceContext(IAzureCloudServiceOptions options, ILoginProvider<TAccount> loginProvider, string offlineDbPath = _offlineDbPath) 
             : base(options, loginProvider)
         {
             OfflineDbPath = offlineDbPath;
