@@ -5,7 +5,7 @@
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wpa81+wp8</PackageTargetFallback>
     <PackageTitle>Azure Mobile Client Helpers for SimpleInjector</PackageTitle>
     <Title>Azure Mobile Mobile Client Helpers for SimpleInjector</Title>
-    <Description>Provides a reusable set of abstractions and classes for using the Microsoft Azure Mobile Client. This library was inspired by the samples originally provided by Adrian Hall, with some modifications to provide a little more flexibility.</Description>
+    <Description>Provides a reusable set of abstractions and classes for using the Microsoft Azure Mobile Client.</Description>
     <PackageTags>microsoft;windows;azure;mobile;apps;services;simpleinjector;</PackageTags>
     <!-- Workaround until Xamarin supports PPDB -->
     <DebugType>full</DebugType>

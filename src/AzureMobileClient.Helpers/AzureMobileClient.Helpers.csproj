@@ -5,8 +5,7 @@
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wpa81+wp8</PackageTargetFallback>
     <PackageTitle>Azure Mobile Client Helpers</PackageTitle>
     <Title>Azure Mobile Mobile Client Helpers</Title>
-    <Description>Provides a reusable set of abstractions and classes for using the Microsoft Azure Mobile Client. This library was inspired by the samples originally provided by Adrian Hall, with some modifications to provide a little more flexibility.</Description>
-    <PackageReleaseNotes>Adding integrated Account Store. Removes problems with having to take a PCL dependency that results in BCL mapping problems.</PackageReleaseNotes>
+    <Description>Provides a reusable set of abstractions and classes for using the Microsoft Azure Mobile Client</Description>
     <PackageTags>microsoft;windows;azure;mobile;apps;services;</PackageTags>
     <!-- Workaround until Xamarin supports PPDB -->
     <DebugType>full</DebugType>
