@@ -28,6 +28,7 @@ tarballs/
 test-results/
 Thumbs.db
 .droidres/
+.vs/
 
 # Mac bundle stuff
 *.dmg
