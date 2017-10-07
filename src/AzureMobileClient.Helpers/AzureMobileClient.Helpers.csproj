@@ -39,10 +39,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="akavache" Version="6.0.0-alpha0038" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="Microsoft.Azure.Mobile.Client.SQLiteStore" Version="4.0.1" />
     <PackageReference Include="MSBuild.Sdk.Extras" Version="1.0.9" PrivateAssets="all" />
-    <PackageReference Include="Xam.Plugin.Connectivity" Version="3.0.3-beta123" />
+    <PackageReference Include="Xam.Plugin.Connectivity" Version="3.0.3" />
   </ItemGroup>
 
   <ItemGroup>
