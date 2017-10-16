@@ -31,27 +31,29 @@ The following examples are based on using DryIoc in a Prism Application:
 ```cs
 protected override void RegisterTypes()
 {
-    Container.Register(typeof(ICloudTable<>), typeof(AzureCloudTable<>);
-    Container.Register(typeof(ICloudSyncTable<>), typeof(AzureCloudSyncTable<>));
-    Container.Register<AwesomeAppCustomerAppContext>(Reuse.Singleton);
+    // ICloudTable is only needed for Online Only data
+    Container.Register(typeof(ICloudTable<>), typeof(AzureCloudTable<>), Reuse.Singleton);
+    Container.Register(typeof(ICloudSyncTable<>), typeof(AzureCloudSyncTable<>), Reuse.Singleton);
 
-    // If you are not using Authentication
-    Container.UseInstance<IMobileServiceClient>(new MobileServiceClient(AppConstants.AppServiceEndpoint));
+    Container.UseInstance<IPublicClientApplication>(new PublicClientApplication(Secrets.AuthClientId, AppConstants.Authority)
+    {
+        RedirectUri = AppConstants.RedirectUri
+    });
 
-    // If you are using Authentication
-    // If using Facebook or some other 3rd Party OAuth provider be sure to register ILoginProvider
-    // in IPlatformServices in your Platform Project. If you are using a custom auth provider, you may
-    // be able to author an ILoginProvider from shared code.
-    Container.Register<IAzureCloudServiceOptions, TodoDemoServiceContextOptions>(Reuse.Singleton);
-    var dataContext = new AppDataContext(Container);
-    Container.UseInstance<ICloudService>(dataContext);
-    Container.UseInstance<IAppDataContext>(dataContext);
-    Container.UseInstance<ICloudAppContext>(dataContext);
-    Container.Register<IMobileServiceClient>(reuse: Reuse.Singleton,
-                                             made: Made.Of(() => Arg.Of<ICloudService>().Client));
-    // Note that this will require you to register ISecureStore
-    Container.Register<IAccountStore,AccountStore>(Reuse.Singleton);
-    Container.Register<ILoginProvider,LoginProvider(Reuse.Singleton);
+    Container.RegisterMany<AADOptions>(reuse: Reuse.Singleton,
+                                       serviceTypeCondition: type =>
+                                                type == typeof(IAADOptions) ||
+                                                type == typeof(IAADLoginProviderOptions));
+
+    Container.Register<IAzureCloudServiceOptions, AppServiceContextOptions>(Reuse.Singleton);
+    Container.RegisterMany<AppDataContext>(reuse: Reuse.Singleton,
+                                           serviceTypeCondition: type => 
+                                                type == typeof(IAppDataContext) ||
+                                                type == typeof(ICloudService));
+    Container.RegisterDelegate<IMobileServiceClient>(factoryDelegate: r => r.Resolve<ICloudService>().Client,
+                                                     reuse: Reuse.Singleton,
+                                                     setup: Setup.With(allowDisposableTransient: true));
+    Container.Register<ILoginProvider<AADAccount>,LoginProvider>(Reuse.Singleton);
 }
 ```
 
@@ -61,6 +63,7 @@ public class AwesomeAppCloudServiceOptions : IAzureCloudServiceOptions
     public string AppServiceEndpoint => "https://yourappname.azurewebsites.net";
     public string AlternateLoginHost => string.Empty;
     public string LoginUriPrefix => string.Empty;
+    public HttpMessageHandler[] Handlers => new HttpMessageHandler[0];
 }
 
 public class AwesomeAppCustomerAppContext : DryIocCloudAppContext
@@ -109,51 +112,6 @@ public class Feedback : EntityData
     public string Status { get; set; }
 }
 ```
-
-## Login Provider
-
-This library tries not to make any direct assumptions on how you should authenticate. There is however an integrated Account Store in the library reducing problems you may otherwise face. While the Account Store is Platform Independent, it requires an implementation of ISecureStore to manage that actual IO transactions. Currently the library has support for iOS and Android with a platform registerable version of the SecureStore class. Note that Android will require the additional step of registering the active Application. 
-
-*Android*
-
-```cs
-public class AndroidInitializer : IPlatformInitializer
-{
-    private Application CurrentApplication { get; }
-
-    public AndroidInitializer(Application application)
-    {
-        CurrentApplication = application;
-    }
-
-    public void RegisterTypes(IContainer container)
-    {
-        container.UseInstance(CurrentApplicaiton);
-        container.Register<ISecureStore, SecureStore>(Reuse.Singleton);
-    }
-}
-
-public class MainActivity : FormsAppCompatActivity
-{
-    protected override void OnCreate(Bundle savedInstanceState)
-    {
-        LoadApplication(new App(new AndroidInitializer(Application)));
-    }
-}
-```
-
-*iOS*
-
-```cs
-public class iOSInitializer : IPlatformInitializer
-{
-    public void RegisterTypes(IContainer container)
-    {
-        container.Register<ISecureStore,SecureStore>(Reuse.Singleton);
-    }
-}
-```
-
 
 [HelpersNuGet]: https://www.nuget.org/packages/AzureMobileClient.Helpers
 [HelpersAutofacNuGet]: https://www.nuget.org/packages/AzureMobileClient.Helpers.Autofac
