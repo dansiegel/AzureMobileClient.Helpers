@@ -20,6 +20,8 @@ namespace AzureMobileClient.Helpers.Accounts
             set { SetStringValue("name", value); }
         }
 
+        public abstract string AccessToken { get; set; }
+
         public abstract bool IsValid { get; }
 
         public virtual Task<bool> CheckValidity() => Task.FromResult(IsValid);

@@ -4,7 +4,7 @@ namespace AzureMobileClient.Helpers.Accounts.OAuth
 {
     public class OAuth2Account : Account, IOAuth2Account
     {
-        public string AccessToken
+        public override string AccessToken
         {
             get { return GetStringValue("access_token"); }
             set { SetStringValue("access_token", value); }
