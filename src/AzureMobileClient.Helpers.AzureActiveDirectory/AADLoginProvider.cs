@@ -9,7 +9,16 @@ using Newtonsoft.Json.Linq;
 
 namespace AzureMobileClient.Helpers.AzureActiveDirectory
 {
-    public abstract class AADLoginProvider : LoginProviderBase<AADAccount>
+    public abstract class AADLoginProvider : AADLoginProvider<AADAccount>
+    {
+        public AADLoginProvider(IPublicClientApplication client, UIParent parent, IAADOptions options) 
+            : base(client, parent, options)
+        {
+        }
+    }
+
+    public abstract class AADLoginProvider<TAccount> : LoginProviderBase<TAccount>
+        where TAccount : AADAccount
     {
         protected IPublicClientApplication _client { get; }
 
@@ -26,7 +35,7 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
         }
 
         public override Task StoreTokenInSecureStore(MobileServiceUser user) =>
-            SaveAccountInSecureStore(new AADAccount(user.MobileServiceAuthenticationToken));
+            SaveAccountInSecureStore((TAccount)new AADAccount(user.MobileServiceAuthenticationToken));
 
         public override async Task<MobileServiceUser> LoginAsync(IMobileServiceClient client)
         {
@@ -100,11 +109,6 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
             var byteArray = Convert.FromBase64String(s);
             var decoded = Encoding.UTF8.GetString(byteArray, 0, byteArray.Count());
             return decoded;
-        }
-
-        protected virtual void Log(Exception exception)
-        {
-
         }
     }
 }

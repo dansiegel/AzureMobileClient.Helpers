@@ -35,14 +35,21 @@ namespace AzureMobileClient.Helpers
 
         public virtual async Task<MobileServiceUser> RetrieveTokenFromSecureStore()
         {
-            var account = await SecureStore.GetObject<OAuth2Account>(AccountServiceName);
-
-            if(account?.IsValid ?? false)
+            try
             {
-                return new MobileServiceUser(account.Id)
+                var account = await SecureStore.GetObject<OAuth2Account>(AccountServiceName);
+
+                if(account?.IsValid ?? false)
                 {
-                    MobileServiceAuthenticationToken = account.AccessToken
-                };
+                    return new MobileServiceUser(account.Id)
+                    {
+                        MobileServiceAuthenticationToken = account.AccessToken
+                    };
+                }
+            }
+            catch(Exception ex)
+            {
+                Log(ex);
             }
 
             return null;
@@ -63,6 +70,11 @@ namespace AzureMobileClient.Helpers
         public virtual async Task SaveAccountInSecureStore(TAccount account)
         {
             await SecureStore.InsertObject(AccountServiceName, account);
+        }
+
+        protected virtual void Log(Exception exception)
+        {
+
         }
     }
 }
