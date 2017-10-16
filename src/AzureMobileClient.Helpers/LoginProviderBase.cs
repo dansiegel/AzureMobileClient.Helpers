@@ -37,7 +37,7 @@ namespace AzureMobileClient.Helpers
         {
             try
             {
-                var account = await SecureStore.GetObject<OAuth2Account>(AccountServiceName);
+                var account = await SecureStore.GetOrCreateObject<OAuth2Account>(AccountServiceName);
 
                 if(account?.IsValid ?? false)
                 {
