@@ -30,14 +30,14 @@ namespace AzureMobileClient.Helpers
 
         public virtual async Task RemoveTokenFromSecureStore()
         {
-            await SecureStore.InvalidateObject<OAuth2Account>(AccountServiceName);
+            await SecureStore.InvalidateObject<TAccount>(AccountServiceName);
         }
 
         public virtual async Task<MobileServiceUser> RetrieveTokenFromSecureStore()
         {
             try
             {
-                var account = await SecureStore.GetOrCreateObject<OAuth2Account>(AccountServiceName);
+                var account = await SecureStore.GetOrCreateObject<TAccount>(AccountServiceName, () => default(TAccount));
 
                 if(account?.IsValid ?? false)
                 {

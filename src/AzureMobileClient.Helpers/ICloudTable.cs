@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace AzureMobileClient.Helpers
@@ -19,7 +20,7 @@ namespace AzureMobileClient.Helpers
         /// </summary>
         Task<T> ReadItemAsync(string id);
 
-        Task<T> ReadItemAsync(Func<T, bool> predicate);
+        Task<T> ReadItemAsync(Expression<System.Func<T, bool>> predicate);
 
         /// <summary>
         /// Updates an Item asynchronously
@@ -36,7 +37,7 @@ namespace AzureMobileClient.Helpers
         /// </summary>
         Task<ICollection<T>> ReadAllItemsAsync();
 
-        Task<ICollection<T>> ReadItemsAsync(Func<T, bool> predicate);
+        Task<ICollection<T>> ReadItemsAsync(Expression<System.Func<T, bool>> predicate);
 
         /// <summary>
         /// Retrieves the items within a specified range asynchronously

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.MobileServices;
 
@@ -48,7 +49,7 @@ namespace AzureMobileClient.Helpers
             return await table.Skip(start).Take(count).ToListAsync();
         }
 
-        public virtual Task<ICollection<T>> ReadItemsAsync(Func<T, bool> predicate) =>
+        public virtual Task<ICollection<T>> ReadItemsAsync(Expression<System.Func<T, bool>> predicate) =>
             table.Where(predicate).ToListAsync();
 
         /// <inheritDoc />
@@ -57,7 +58,7 @@ namespace AzureMobileClient.Helpers
             return await table.LookupAsync(id);
         }
 
-        public virtual async Task<T> ReadItemAsync(Func<T, bool> predicate) =>
+        public virtual async Task<T> ReadItemAsync(Expression<System.Func<T, bool>> predicate) =>
             (await table.Where(predicate).Take(1).ToListAsync()).FirstOrDefault();
 
         /// <inheritDoc />
