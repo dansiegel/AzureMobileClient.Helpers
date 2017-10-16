@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.MobileServices;
@@ -56,20 +57,24 @@ namespace AzureMobileClient.Helpers
             => await table.DeleteAsync(item);
 
         /// <inheritDoc />
-        public virtual async Task<ICollection<T>> ReadAllItemsAsync()
-        {
-            return await table.ToListAsync();
-        }
+        public virtual Task<ICollection<T>> ReadAllItemsAsync() =>
+            table.ToListAsync();
 
         /// <inheritDoc />
         public virtual async Task<T> ReadItemAsync(string id)
             => await table.LookupAsync(id);
+
+        public virtual async Task<T> ReadItemAsync(Func<T, bool> predicate) =>
+            (await table.Where(predicate).Take(1).ToListAsync()).FirstOrDefault();
 
         /// <inheritDoc />
         public virtual async Task<ICollection<T>> ReadItemsAsync(int start, int count)
         {
             return await table.Skip(start).Take(count).ToListAsync();
         }
+
+        public virtual Task<ICollection<T>> ReadItemsAsync(Func<T, bool> predicate) =>
+            table.Where(predicate).ToListAsync();
 
         /// <inheritDoc />
         public virtual async Task<T> UpdateItemAsync(T item)

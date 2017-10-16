@@ -18,6 +18,8 @@ namespace AzureMobileClient.Helpers
         /// </summary>
         Task<T> ReadItemAsync(string id);
 
+        Task<T> ReadItemAsync(Func<T, bool> predicate);
+
         /// <summary>
         /// Updates an Item asynchronously
         /// </summary>
@@ -32,6 +34,8 @@ namespace AzureMobileClient.Helpers
         /// Retrieves all of the table items asynchronously
         /// </summary>
         Task<ICollection<T>> ReadAllItemsAsync();
+
+        Task<ICollection<T>> ReadItemsAsync(Func<T, bool> predicate);
 
         /// <summary>
         /// Retrieves the items within a specified range asynchronously
