@@ -27,7 +27,7 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
         }
 
         private string _accessToken;
-        public string AccessToken
+        public override string AccessToken
         {
             get => GetStringValue("auth_token");
             set => SetStringValue("auth_token");
