@@ -26,13 +26,6 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
             set => SetStringValue("oid");
         }
 
-        private string _accessToken;
-        public override string AccessToken
-        {
-            get => GetStringValue("auth_token");
-            set => SetStringValue("auth_token");
-        }
-
         public string RefreshToken
         {
             get => GetStringValue("refresh_token");

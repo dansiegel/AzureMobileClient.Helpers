@@ -11,10 +11,17 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
 {
     public abstract class AADLoginProvider : AADLoginProvider<AADAccount>
     {
-        public AADLoginProvider(IPublicClientApplication client, UIParent parent, IAADOptions options) 
+        public AADLoginProvider(IPublicClientApplication client, UIParent parent, IAADOptions options)
             : base(client, parent, options)
         {
         }
+
+        protected override AADAccount CreateAccountFromToken(string token, string refreshToken = null) =>
+            new AADAccount(token)
+            {
+
+                RefreshToken = refreshToken
+            };
     }
 
     public abstract class AADLoginProvider<TAccount> : LoginProviderBase<TAccount>
@@ -34,17 +41,13 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
             _parent = parent;
         }
 
-        public override Task StoreTokenInSecureStore(MobileServiceUser user) =>
-            SaveAccountInSecureStore((TAccount)new AADAccount(user.MobileServiceAuthenticationToken));
-
-        public override async Task<MobileServiceUser> LoginAsync(IMobileServiceClient client)
+        public override async Task<TAccount> LoginAsync(IMobileServiceClient client)
         {
             var accessToken = await LoginADALAsync();
             var zumoPayload = new JObject();
             zumoPayload["access_token"] = accessToken;
             var user = await client.LoginAsync(MobileServiceAuthenticationProvider.WindowsAzureActiveDirectory, zumoPayload);
-            await StoreTokenInSecureStore(user);
-            return user;
+            return CreateAccountFromToken(accessToken, user.MobileServiceAuthenticationToken);
         }
 
         /// <summary>

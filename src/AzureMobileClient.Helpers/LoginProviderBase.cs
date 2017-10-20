@@ -21,6 +21,8 @@ namespace AzureMobileClient.Helpers
 
         public abstract Task<TAccount> LoginAsync(IMobileServiceClient client);
 
+        protected abstract TAccount CreateAccountFromToken(string token, string refreshToken = null);
+
         public virtual async Task RemoveTokenFromSecureStore()
         {
             await SecureStore.InvalidateObject<TAccount>(AccountServiceName);
