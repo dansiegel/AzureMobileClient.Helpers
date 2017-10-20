@@ -10,21 +10,16 @@ namespace AzureMobileClient.Helpers
     public interface ILoginProvider<TAccount> where TAccount : IAccount
     {
         /// <summary>
-        /// Retrieves the Token from the Secure Store
-        /// </summary>
-        Task<MobileServiceUser> RetrieveTokenFromSecureStore();
-
-        /// <summary>
         /// Retrieve's the Account from the Secure Store
         /// </summary>
         /// <returns></returns>
         Task<TAccount> RetrieveOAuthAccountFromSecureStore();
 
         /// <summary>
-        /// Stores the Token in the Secure Store
+        /// Saves the Account in secure store.
         /// </summary>
-        Task StoreTokenInSecureStore(MobileServiceUser user);
-
+        /// <returns>The Account in secure store.</returns>
+        /// <param name="account">Account.</param>
         Task SaveAccountInSecureStore(TAccount account);
 
         /// <summary>
@@ -35,6 +30,9 @@ namespace AzureMobileClient.Helpers
         /// <summary>
         /// Perform Login Action for an unauthenticated user
         /// </summary>
-        Task<MobileServiceUser> LoginAsync(IMobileServiceClient client);
+        /// <returns>
+        /// The Account
+        /// </returns>
+        Task<TAccount> LoginAsync(IMobileServiceClient client);
     }
 }

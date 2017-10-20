@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.WindowsAzure.MobileServices;
-using AzureMobileClient.Helpers.Accounts;
-using AzureMobileClient.Helpers.Accounts.OAuth;
-using Akavache;
-using Akavache.Sqlite3;
 using System.Reactive.Linq;
-using System.Linq;
+using System.Threading.Tasks;
+using Akavache;
+using AzureMobileClient.Helpers.Accounts;
+using Microsoft.WindowsAzure.MobileServices;
 
 namespace AzureMobileClient.Helpers
 {
@@ -17,8 +12,6 @@ namespace AzureMobileClient.Helpers
     {
         public abstract string AccountServiceName { get; }
 
-        //public IAccountStore AccountStore { get; }
-
         protected ISecureBlobCache SecureStore { get; }
 
         public LoginProviderBase()
@@ -26,41 +19,12 @@ namespace AzureMobileClient.Helpers
             SecureStore = BlobCache.Secure;
         }
 
-        public abstract Task<MobileServiceUser> LoginAsync(IMobileServiceClient client);
+        public abstract Task<TAccount> LoginAsync(IMobileServiceClient client);
 
         public virtual async Task RemoveTokenFromSecureStore()
         {
             await SecureStore.InvalidateObject<TAccount>(AccountServiceName);
         }
-
-        public virtual async Task<MobileServiceUser> RetrieveTokenFromSecureStore()
-        {
-            try
-            {
-                var account = await SecureStore.GetOrCreateObject<TAccount>(AccountServiceName, () => default(TAccount));
-
-                if(account?.IsValid ?? false)
-                {
-                    return new MobileServiceUser(account.Id)
-                    {
-                        MobileServiceAuthenticationToken = account.AccessToken
-                    };
-                }
-            }
-            catch(Exception ex)
-            {
-                Log(ex);
-            }
-
-            return null;
-        }
-
-        public abstract Task StoreTokenInSecureStore(MobileServiceUser user);
-        //await SaveAccountInSecureStore((TAccount)new OAuth2Account()
-        //{
-        //    Id = user.UserId,
-        //    AccessToken = user.MobileServiceAuthenticationToken
-        //});
 
         public virtual async Task<TAccount> RetrieveOAuthAccountFromSecureStore()
         {

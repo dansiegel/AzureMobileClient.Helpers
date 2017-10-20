@@ -21,7 +21,5 @@ namespace AzureMobileClient.Helpers
         /// The Login Uri Prefix
         /// </summary>
         string LoginUriPrefix { get; }
-
-        HttpMessageHandler[] Handlers { get; }
     }
 }

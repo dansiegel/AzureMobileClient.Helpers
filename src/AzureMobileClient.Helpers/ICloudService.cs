@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AzureMobileClient.Helpers.Accounts;
 using Microsoft.WindowsAzure.MobileServices;
 
 namespace AzureMobileClient.Helpers
@@ -6,7 +7,8 @@ namespace AzureMobileClient.Helpers
     /// <summary>
     /// ICloudService
     /// </summary>
-    public interface ICloudService 
+    public interface ICloudService<TAccount>
+        where TAccount : IAccount
     {
         /// <summary>
         /// The MobileServiceClient used by the ICloud Service
@@ -16,7 +18,7 @@ namespace AzureMobileClient.Helpers
         /// <summary>
         /// Logs the user in asynchronously
         /// </summary>
-        Task<MobileServiceUser> LoginAsync();
+        Task<TAccount> LoginAsync();
 
         /// <summary>
         /// Logs the user out asynchronously
