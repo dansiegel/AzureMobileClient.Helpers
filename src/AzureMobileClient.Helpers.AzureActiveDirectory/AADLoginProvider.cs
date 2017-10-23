@@ -16,11 +16,10 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
         {
         }
 
-        protected override AADAccount CreateAccountFromToken(string token, string refreshToken = null) =>
+        protected override AADAccount CreateAccountFromToken(string token, string mobileServiceClientToken = null) =>
             new AADAccount(token)
             {
-
-                RefreshToken = refreshToken
+                MobileServiceClientToken = mobileServiceClientToken
             };
     }
 
@@ -47,7 +46,9 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
             var zumoPayload = new JObject();
             zumoPayload["access_token"] = accessToken;
             var user = await client.LoginAsync(MobileServiceAuthenticationProvider.WindowsAzureActiveDirectory, zumoPayload);
-            return CreateAccountFromToken(accessToken, user.MobileServiceAuthenticationToken);
+            var account = CreateAccountFromToken(accessToken, user.MobileServiceAuthenticationToken);
+            await SaveAccountInSecureStore(account);
+            return account;
         }
 
         /// <summary>
@@ -96,7 +97,7 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
 
         private IUser GetUserByPolicy(string policy)
         {
-            foreach (var user in _client.Users)
+            foreach (var user in _client?.Users)
             {
                 string userIdentifier = Base64UrlDecode(user.Identifier.Split('.')[0]);
                 if (userIdentifier.EndsWith(policy, StringComparison.OrdinalIgnoreCase)) return user;

@@ -21,7 +21,7 @@ namespace AzureMobileClient.Helpers
 
         public abstract Task<TAccount> LoginAsync(IMobileServiceClient client);
 
-        protected abstract TAccount CreateAccountFromToken(string token, string refreshToken = null);
+        protected abstract TAccount CreateAccountFromToken(string token, string mobileServiceClientToken = null);
 
         public virtual async Task RemoveTokenFromSecureStore()
         {
@@ -30,7 +30,9 @@ namespace AzureMobileClient.Helpers
 
         public virtual async Task<TAccount> RetrieveOAuthAccountFromSecureStore()
         {
-            return await SecureStore.GetObject<TAccount>(AccountServiceName);
+            if(await SecureStore.ContainsKey(AccountServiceName))
+                return await SecureStore.GetObject<TAccount>(AccountServiceName);
+            return default(TAccount);
         }
 
         public virtual async Task SaveAccountInSecureStore(TAccount account)

@@ -13,16 +13,17 @@ namespace AzureMobileClient.Helpers.Http
     /// when the response returns an initial 401 Unauthorized response. Then retries the
     /// original call and returns the response.
     /// </summary>
-    public class AuthenticationDelegatingHandler : DelegatingHandler
+    public class AuthenticationDelegatingHandler<TAccount> : DelegatingHandler
+        where TAccount : IAccount
     {
         const string ZumoAuthHeader = "X-ZUMO-AUTH";
 
-        protected ICloudService<IAccount> _cloudService { get; }
+        protected ICloudService<TAccount> _cloudService { get; }
 
         /// <summary>
         /// Initializes the <see cref="AuthenticationDelegatingHandler" />
         /// </summary>
-        public AuthenticationDelegatingHandler(ICloudService<IAccount> cloudService)
+        public AuthenticationDelegatingHandler(ICloudService<TAccount> cloudService)
         {
             _cloudService = cloudService;
         }
@@ -44,7 +45,7 @@ namespace AzureMobileClient.Helpers.Http
                 // Now, retry the request with the cloned request.  The only thing we have
                 // to do is replace the X-ZUMO-AUTH header with the new auth token.
                 clone.Headers.Remove(ZumoAuthHeader);
-                clone.Headers.Add(ZumoAuthHeader, user.AccessToken);
+                clone.Headers.Add(ZumoAuthHeader, user.MobileServiceClientToken);
                 response = await base.SendAsync(clone, cancellationToken);
             }
 

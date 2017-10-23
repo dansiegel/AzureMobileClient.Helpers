@@ -34,7 +34,7 @@ namespace AzureMobileClient.Helpers
         {
             // This is a terrible design, but there isn't a way to update the Mobile Service Client's
             // Handlers after it's been initialized.
-            Client = new MobileServiceClient(options.AppServiceEndpoint, GetHandlers());
+            Client = CreateMobileServiceClient(options);
 
             if (!string.IsNullOrWhiteSpace(options.LoginUriPrefix))
             {
@@ -53,20 +53,25 @@ namespace AzureMobileClient.Helpers
         /// <inheritDoc />
         public IMobileServiceClient Client { get; }
 
+        protected virtual IMobileServiceClient CreateMobileServiceClient(IAzureCloudServiceOptions options)
+        {
+            return new MobileServiceClient(options.AppServiceEndpoint, GetHandlers());
+        }
+
         /// <summary>
         /// Gets the handlers.
         /// </summary>
         /// <returns>The handlers.</returns>
         protected virtual HttpMessageHandler[] GetHandlers()
         {
-            return new HttpMessageHandler[] { new AuthenticationDelegatingHandler(this as ICloudService<IAccount>) };
+            return new HttpMessageHandler[] { new AuthenticationDelegatingHandler<TAccount>(this) };
         }
 
         /// <inheritDoc />
         public virtual async Task<TAccount> LoginAsync()
         {
             var oauthUser = await _loginProvider.RetrieveOAuthAccountFromSecureStore();
-            if (oauthUser.IsValid)
+            if (oauthUser?.IsValid ?? false)
             {
                 // User has previously been authenticated - try to Refresh the token
                 try
