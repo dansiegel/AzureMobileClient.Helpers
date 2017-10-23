@@ -17,8 +17,8 @@ namespace AzureMobileClient.Helpers.Accounts
         /// <value>The identifier.</value>
         public string Id
         {
-            get { return GetStringValue("id"); }
-            set { SetStringValue("id", value); }
+            get { return this.GetStringValue("id"); }
+            set { this.SetStringValue("id", value); }
         }
 
         /// <summary>
@@ -27,8 +27,8 @@ namespace AzureMobileClient.Helpers.Accounts
         /// <value>The name.</value>
         public string Name
         {
-            get { return GetStringValue("name"); }
-            set { SetStringValue("name", value); }
+            get { return this.GetStringValue("name"); }
+            set { this.SetStringValue("name", value); }
         }
 
         /// <summary>
@@ -37,8 +37,8 @@ namespace AzureMobileClient.Helpers.Accounts
         /// <value>The access token.</value>
         public string AccessToken
         {
-            get => GetStringValue("access_token");
-            set => SetStringValue("access_token", value);
+            get => this.GetStringValue("access_token");
+            set => this.SetStringValue("access_token", value);
         }
 
         /// <summary>
@@ -48,145 +48,27 @@ namespace AzureMobileClient.Helpers.Accounts
         public abstract bool IsValid { get; }
 
         /// <summary>
+        /// Gets the Token to be used by the Mobile Service Client
+        /// </summary>
+        public string MobileServiceClientToken
+        {
+            get => this.GetStringValue("mobile_service_client_token");
+            set => this.SetStringValue("mobile_service_client_token", value);
+        }
+
+        /// <summary>
+        /// Gets the Expiration of the Token used by the Mobile Service Client
+        /// </summary>
+        public DateTime MobileServiceClientTokenExpires
+        {
+            get => this.GetDateTimeValue("mobile_service_client_token_expires") ?? DateTime.Now;
+            set => this.SetDateTimeValue("mobile_service_client_token_expires", value);
+        }
+
+        /// <summary>
         /// Checks the validity.
         /// </summary>
         /// <returns>The validity.</returns>
         public virtual Task<bool> CheckValidity() => Task.FromResult(IsValid);
-
-        /// <summary>
-        /// Gets the string value.
-        /// </summary>
-        /// <returns>The string value.</returns>
-        /// <param name="key">Key.</param>
-        /// <param name="defaultValue">Default value.</param>
-        protected virtual string GetStringValue(string key, string defaultValue = null)
-        {
-            string r;
-            if (!TryGetValue(key, out r))
-                r = defaultValue;
-            return r;
-        }
-
-        /// <summary>
-        /// Sets the string value.
-        /// </summary>
-        /// <param name="key">Key.</param>
-        /// <param name="value">Value.</param>
-        protected virtual void SetStringValue(string key, string value = null)
-        {
-            if (ContainsKey(key))
-                this[key] = value;
-            else
-                Add(key, value);
-        }
-
-        /// <summary>
-        /// Gets the date time value.
-        /// </summary>
-        /// <returns>The date time value.</returns>
-        /// <param name="key">Key.</param>
-        /// <param name="defaultValue">Default value.</param>
-        protected virtual DateTime? GetDateTimeValue(string key, DateTime? defaultValue = null)
-        {
-            DateTime r;
-
-            var str = GetStringValue(key);
-
-            if (string.IsNullOrEmpty(str))
-                return defaultValue;
-
-            if (long.TryParse(str, out long timestamp))
-                return new DateTime(1970, 1, 1).AddSeconds(timestamp);
-
-            if (DateTime.TryParse(str, out r))
-                return r;
-
-            return defaultValue;
-        }
-
-        /// <summary>
-        /// Sets the date time value.
-        /// </summary>
-        /// <param name="key">Key.</param>
-        /// <param name="value">Value.</param>
-        protected virtual void SetDateTimeValue(string key, DateTime? value = null)
-        {
-            if (!value.HasValue)
-                SetStringValue(key);
-            else
-            {
-                var t = value.Value.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-                var s = (int)t.TotalSeconds;
-                SetStringValue(key, s.ToString());
-            }
-        }
-
-        /// <summary>
-        /// Gets the long value.
-        /// </summary>
-        /// <returns>The long value.</returns>
-        /// <param name="key">Key.</param>
-        /// <param name="defaultValue">Default value.</param>
-        protected virtual long? GetLongValue(string key, long? defaultValue = null)
-        {
-            long r;
-
-            var str = GetStringValue(key);
-
-            if (string.IsNullOrEmpty(str))
-                return defaultValue;
-
-            if (long.TryParse(str, out r))
-                return r;
-
-            return defaultValue;
-        }
-
-        /// <summary>
-        /// Sets the long value.
-        /// </summary>
-        /// <param name="key">Key.</param>
-        /// <param name="value">Value.</param>
-        protected virtual void SetLongValue(string key, long? value = null)
-        {
-            if (!value.HasValue)
-                SetStringValue(key);
-            else
-                SetStringValue(key, value.Value.ToString());
-        }
-
-        /// <summary>
-        /// Gets the bool value.
-        /// </summary>
-        /// <returns>The bool value.</returns>
-        /// <param name="key">Key.</param>
-        /// <param name="defaultValue">Default value.</param>
-        protected virtual bool? GetBoolValue(string key, bool? defaultValue = null)
-        {
-            bool r;
-
-            var str = GetStringValue(key);
-
-            if (string.IsNullOrEmpty(str))
-                return defaultValue;
-
-            if (bool.TryParse(str, out r))
-                return r;
-
-            return defaultValue;
-        }
-
-        /// <summary>
-        /// Sets the bool value.
-        /// </summary>
-        /// <param name="key">Key.</param>
-        /// <param name="value">Value.</param>
-        protected virtual void SetBoolValue(string key, bool? value = null)
-        {
-            if (!value.HasValue)
-                SetStringValue(key);
-            else
-                SetStringValue(key, value.Value.ToString());
-        }
     }
 }

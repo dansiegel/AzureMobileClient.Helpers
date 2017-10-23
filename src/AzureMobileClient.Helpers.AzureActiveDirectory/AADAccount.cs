@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Threading.Tasks;
 using AzureMobileClient.Helpers.Accounts;
 using AzureMobileClient.Helpers.Accounts.OAuth;
 
 namespace AzureMobileClient.Helpers.AzureActiveDirectory
 {
-    public class AADAccount : Account, IOAuth2Account
+    public class AADAccount : Dictionary<string, string>, IOAuth2Account
     {
         public AADAccount()
         {
@@ -20,96 +22,141 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
             }
         }
 
-        public new string Id
+        ///// <summary>
+        ///// Gets or sets the name.
+        ///// </summary>
+        ///// <value>The name.</value>
+        //public string Name
+        //{
+        //    get { return this.GetStringValue("name"); }
+        //    set { this.SetStringValue("name", value); }
+        //}
+
+        /// <summary>
+        /// Gets or sets the access token.
+        /// </summary>
+        /// <value>The access token.</value>
+        public string AccessToken
         {
-            get => GetStringValue("oid");
-            set => SetStringValue("oid");
+            get => this.GetStringValue("access_token");
+            set => this.SetStringValue("access_token", value);
+        }
+
+        public string Id
+        {
+            get => this.GetStringValue("oid");
+            set => this.SetStringValue("oid", value);
         }
 
         public string RefreshToken
         {
-            get => GetStringValue("refresh_token");
-            set => SetStringValue("refresh_token");
+            get => this.GetStringValue("refresh_token");
+            set => this.SetStringValue("refresh_token", value);
         }
 
         public string TokenType
         {
-            get => GetStringValue("token_type");
-            set => SetStringValue("token_type");
+            get => this.GetStringValue("token_type");
+            set => this.SetStringValue("token_type", value);
         }
 
         public string Scope
         {
-            get => GetStringValue("scope");
-            set => SetStringValue("scope");
+            get => this.GetStringValue("scope");
+            set => this.SetStringValue("scope", value);
         }
 
         public DateTime? AccessTokenExpires
         {
-            get => GetDateTimeValue("exp");
-            set => SetDateTimeValue("exp");
+            get => this.GetDateTimeValue("exp");
+            set => this.SetDateTimeValue("exp", value);
         }
 
         public DateTime? RefreshTokenExpires
         {
-            get => GetDateTimeValue("refresh_token_expires");
-            set => SetDateTimeValue("refresh_token_expires");
+            get => this.GetDateTimeValue("refresh_token_expires");
+            set => this.SetDateTimeValue("refresh_token_expires", value);
         }
 
         public bool IsNew
         {
-            get => GetBoolValue("newUser") ?? false;
-            set => SetBoolValue("newUser");
+            get => this.GetBoolValue("newUser") ?? false;
+            set => this.SetBoolValue("newUser", value);
         }
 
         public string FirstName
         {
-            get => GetStringValue("given_name");
-            set => SetStringValue("given_name");
+            get => this.GetStringValue("given_name");
+            set => this.SetStringValue("given_name", value);
         }
 
         public string LastName
         {
-            get => GetStringValue("family_name");
-            set => SetStringValue("family_name");
+            get => this.GetStringValue("family_name");
+            set => this.SetStringValue("family_name", value);
         }
 
-        public new string Name
+        public virtual string Name
         {
             get => $"{FirstName} {LastName}";
+            set { }
         }
 
         public string Issuer
         {
-            get => GetStringValue("iss");
-            set => SetStringValue("iss");
+            get => this.GetStringValue("iss");
+            set => this.SetStringValue("iss", value);
         }
 
         public string TrustFrameworkPolicy
         {
-            get => GetStringValue("tfp");
-            set => SetStringValue("tfp");
+            get => this.GetStringValue("tfp");
+            set => this.SetStringValue("tfp", value);
         }
 
         public DateTime? IssuedAt
         {
-            get => GetDateTimeValue("iat");
-            set => SetDateTimeValue("iat");
+            get => this.GetDateTimeValue("iat");
+            set => this.SetDateTimeValue("iat", value);
         }
 
         public DateTime? NotBefore
         {
-            get => GetDateTimeValue("nbf");
-            set => SetDateTimeValue("nbf");
+            get => this.GetDateTimeValue("nbf");
+            set => this.SetDateTimeValue("nbf", value);
         }
 
         public string Subject
         {
-            get => GetStringValue("sub");
-            set => SetStringValue("sub");
+            get => this.GetStringValue("sub");
+            set => this.SetStringValue("sub", value);
         }
 
-        public override bool IsValid => AccessTokenExpires != null &&
+        /// <summary>
+        /// Gets the Token to be used by the Mobile Service Client
+        /// </summary>
+        public string MobileServiceClientToken
+        {
+            get => this.GetStringValue("mobile_service_client_token");
+            set => this.SetStringValue("mobile_service_client_token", value);
+        }
+
+        /// <summary>
+        /// Gets the Expiration of the Token used by the Mobile Service Client
+        /// </summary>
+        public DateTime MobileServiceClientTokenExpires
+        {
+            get => this.GetDateTimeValue("mobile_service_client_token_expires") ?? DateTime.Now;
+            set => this.SetDateTimeValue("mobile_service_client_token_expires");
+        }
+
+        public virtual bool IsValid => AccessTokenExpires != null &&
                                         DateTime.Now.ToLocalTime() < AccessTokenExpires.Value.ToLocalTime();
+
+        /// <summary>
+        /// Checks the validity.
+        /// </summary>
+        /// <returns>The validity.</returns>
+        public virtual Task<bool> CheckValidity() => Task.FromResult(IsValid);
     }
 }

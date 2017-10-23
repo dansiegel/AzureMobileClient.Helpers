@@ -13,8 +13,8 @@ namespace AzureMobileClient.Helpers.Accounts.OAuth
         /// <value>The refresh token.</value>
         public string RefreshToken
         {
-            get { return GetStringValue("refresh_token"); }
-            set { SetStringValue("refresh_token", value); }
+            get => this.GetStringValue("refresh_token");
+            set => this.SetStringValue("refresh_token", value);
         }
 
         /// <summary>
@@ -23,8 +23,8 @@ namespace AzureMobileClient.Helpers.Accounts.OAuth
         /// <value>The type of the token.</value>
         public string TokenType
         {
-            get { return GetStringValue("token_type"); }
-            set { SetStringValue("token_type", value); }
+            get => this.GetStringValue("token_type");
+            set => this.SetStringValue("token_type", value);
         }
 
         /// <summary>
@@ -33,8 +33,8 @@ namespace AzureMobileClient.Helpers.Accounts.OAuth
         /// <value>The scope.</value>
         public string Scope
         {
-            get { return GetStringValue("scope"); }
-            set { SetStringValue("scope", value); }
+            get => this.GetStringValue("scope");
+            set => this.SetStringValue("scope", value);
         }
 
         /// <summary>
@@ -43,8 +43,8 @@ namespace AzureMobileClient.Helpers.Accounts.OAuth
         /// <value>The access token expires.</value>
         public DateTime? AccessTokenExpires
         {
-            get { return GetDateTimeValue("expires_in"); }
-            set { SetDateTimeValue("expires_in", value); }
+            get => this.GetDateTimeValue("expires_in");
+            set => this.SetDateTimeValue("expires_in", value);
         }
 
         /// <summary>
@@ -53,8 +53,8 @@ namespace AzureMobileClient.Helpers.Accounts.OAuth
         /// <value>The refresh token expires.</value>
         public DateTime? RefreshTokenExpires
         {
-            get { return GetDateTimeValue("refresh_expires_in"); }
-            set { SetDateTimeValue("refresh_expires_in", value); }
+            get => this.GetDateTimeValue("refresh_expires_in");
+            set => this.SetDateTimeValue("refresh_expires_in", value);
         }
 
         /// <summary>

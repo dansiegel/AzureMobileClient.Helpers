@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,6 +35,10 @@ namespace AzureMobileClient.Helpers.Accounts
         /// </summary>
         /// <value>The access token.</value>
         string AccessToken { get; set; }
+
+        string MobileServiceClientToken { get; set; }
+
+        DateTime MobileServiceClientTokenExpires { get; set; }
 
         /// <summary>
         /// Checks the validity.
