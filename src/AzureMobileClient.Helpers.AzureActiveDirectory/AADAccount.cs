@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Threading.Tasks;
 using AzureMobileClient.Helpers.Accounts;
 using AzureMobileClient.Helpers.Accounts.OAuth;
@@ -138,7 +139,12 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
         public string MobileServiceClientToken
         {
             get => this.GetStringValue("mobile_service_client_token");
-            set => this.SetStringValue("mobile_service_client_token", value);
+            set
+            {
+                this.SetStringValue("mobile_service_client_token", value);
+                var exp = new JwtSecurityToken(value).Claims.FirstOrDefault(c => c.Type == "exp");
+                this["mobile_service_client_token_expires"] = exp.Value;
+            }
         }
 
         /// <summary>
