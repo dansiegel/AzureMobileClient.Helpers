@@ -1,8 +1,8 @@
 ﻿using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AzureMobileClient.Helpers.Accounts;
 using Microsoft.Identity.Client;
 using Microsoft.WindowsAzure.MobileServices;
 using Newtonsoft.Json.Linq;
@@ -42,20 +42,68 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
 
         public override async Task<TAccount> LoginAsync(IMobileServiceClient client)
         {
+            var account = await RetrieveOAuthAccountFromSecureStore();
+
+            if (account == null)
+                return await LoginUnknownUserAsync(client);
+
+            return await LoginFromAccountAsync(account, client);
+        }
+
+        protected virtual async Task<TAccount> LoginFromAccountAsync(TAccount account, IMobileServiceClient client)
+        {
+            if(account.IsValid && account.MobileServiceClientTokenExpires >= DateTime.Now.AddMinutes(30))
+            {
+                if(client.CurrentUser == null)
+                {
+                    var claims = new JwtSecurityToken(account.AccessToken).Claims;
+                    client.CurrentUser = new MobileServiceUser(claims.FirstOrDefault(c => c.Type == "oid").Value)
+                    {
+                        MobileServiceAuthenticationToken = account.MobileServiceClientToken
+                    };
+                }
+
+                return account;
+            }
+            else if(client.CurrentUser != null)
+            {
+                var user = await client.RefreshUserAsync();
+                account.MobileServiceClientToken = user.MobileServiceAuthenticationToken;
+                await SaveAccountInSecureStore(account);
+                return account;
+            }
+            else if(account.IsValid)
+            {
+                account.MobileServiceClientToken = await AuthenticateMobileClientAsync(client, account.AccessToken);
+                await SaveAccountInSecureStore(account);
+                return account;
+            }
+
+            return await LoginUnknownUserAsync(client);
+        }
+
+        protected virtual async Task<TAccount> LoginUnknownUserAsync(IMobileServiceClient client)
+        {
             var accessToken = await LoginADALAsync();
-            var zumoPayload = new JObject();
-            zumoPayload["access_token"] = accessToken;
-            var user = await client.LoginAsync(MobileServiceAuthenticationProvider.WindowsAzureActiveDirectory, zumoPayload);
-            var account = CreateAccountFromToken(accessToken, user.MobileServiceAuthenticationToken);
+            var mobileServiceClientToken = await AuthenticateMobileClientAsync(client, accessToken);
+            var account = CreateAccountFromToken(accessToken, mobileServiceClientToken);
             await SaveAccountInSecureStore(account);
             return account;
+        }
+
+        protected virtual async Task<string> AuthenticateMobileClientAsync(IMobileServiceClient client, string aadToken)
+        {
+            var zumoPayload = new JObject();
+            zumoPayload["access_token"] = aadToken;
+            var user = await client.LoginAsync(MobileServiceAuthenticationProvider.WindowsAzureActiveDirectory, zumoPayload);
+            return user.MobileServiceAuthenticationToken;
         }
 
         /// <summary>
         /// Login via ADAL
         /// </summary>
         /// <returns>(async) token from the ADAL process</returns>
-        public async Task<string> LoginADALAsync()
+        protected virtual async Task<string> LoginADALAsync()
         {
             try
             {
