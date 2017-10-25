@@ -1,5 +1,5 @@
 using AzureMobileClient.Helpers.Accounts;
-using Microsoft.Practices.Unity;
+using Unity;
 using Microsoft.WindowsAzure.MobileServices;
 
 namespace AzureMobileClient.Helpers
