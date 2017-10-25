@@ -147,7 +147,7 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
         public DateTime MobileServiceClientTokenExpires
         {
             get => this.GetDateTimeValue("mobile_service_client_token_expires") ?? DateTime.Now;
-            set => this.SetDateTimeValue("mobile_service_client_token_expires");
+            set => this.SetDateTimeValue("mobile_service_client_token_expires", value);
         }
 
         public virtual bool IsValid => AccessTokenExpires != null &&
