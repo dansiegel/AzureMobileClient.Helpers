@@ -52,9 +52,9 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
 
         protected virtual async Task<TAccount> LoginFromAccountAsync(TAccount account, IMobileServiceClient client)
         {
-            if(account.IsValid && account.MobileServiceClientTokenExpires >= DateTime.Now.AddMinutes(30))
+            if (account.IsValid && account.MobileServiceClientTokenExpires >= DateTime.Now.AddMinutes(30))
             {
-                if(client.CurrentUser == null)
+                if (client.CurrentUser == null)
                 {
                     var claims = new JwtSecurityToken(account.AccessToken).Claims;
                     client.CurrentUser = new MobileServiceUser(claims.FirstOrDefault(c => c.Type == "oid").Value)
@@ -65,17 +65,17 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
 
                 return account;
             }
-            else if(client.CurrentUser != null)
+            else if (client.CurrentUser != null)
             {
                 var user = await client.RefreshUserAsync();
                 account.MobileServiceClientToken = user.MobileServiceAuthenticationToken;
-                await SaveAccountInSecureStore(account);
+                SaveAccountInSecureStore(account);
                 return account;
             }
-            else if(account.IsValid)
+            else if (account.IsValid)
             {
                 account.MobileServiceClientToken = await AuthenticateMobileClientAsync(client, account.AccessToken);
-                await SaveAccountInSecureStore(account);
+                SaveAccountInSecureStore(account);
                 return account;
             }
 
@@ -87,7 +87,7 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
             var accessToken = await LoginADALAsync();
             var mobileServiceClientToken = await AuthenticateMobileClientAsync(client, accessToken);
             var account = CreateAccountFromToken(accessToken, mobileServiceClientToken);
-            await SaveAccountInSecureStore(account);
+            SaveAccountInSecureStore(account);
             return account;
         }
 

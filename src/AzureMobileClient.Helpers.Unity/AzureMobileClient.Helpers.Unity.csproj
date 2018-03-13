@@ -15,6 +15,6 @@
     <ProjectReference Include="..\AzureMobileClient.Helpers\AzureMobileClient.Helpers.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Unity" Version="5.0.1" />
+    <PackageReference Include="Unity" Version="5.7.3" />
   </ItemGroup>
 </Project>

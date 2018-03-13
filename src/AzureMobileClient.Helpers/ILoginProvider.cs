@@ -20,7 +20,7 @@ namespace AzureMobileClient.Helpers
         /// </summary>
         /// <returns>The Account in secure store.</returns>
         /// <param name="account">Account.</param>
-        Task SaveAccountInSecureStore(TAccount account);
+        void SaveAccountInSecureStore(TAccount account);
 
         /// <summary>
         /// Removes the Authentication Token from the Secure Store

@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Reactive.Linq;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Akavache;
 using AzureMobileClient.Helpers.Accounts;
 using Microsoft.WindowsAzure.MobileServices;
+using Xamarin.Auth;
 
 namespace AzureMobileClient.Helpers
 {
@@ -12,11 +13,11 @@ namespace AzureMobileClient.Helpers
     {
         public abstract string AccountServiceName { get; }
 
-        protected ISecureBlobCache SecureStore { get; }
+        protected AccountStore AccountStore { get; }
 
         public LoginProviderBase()
         {
-            SecureStore = BlobCache.Secure;
+            AccountStore = AccountStore.Create();
         }
 
         public abstract Task<TAccount> LoginAsync(IMobileServiceClient client);
@@ -25,19 +26,27 @@ namespace AzureMobileClient.Helpers
 
         public virtual async Task RemoveTokenFromSecureStore()
         {
-            await SecureStore.InvalidateObject<TAccount>(AccountServiceName);
+            var accounts = AccountStore.FindAccountsForService(AccountServiceName);
+            foreach (var account in accounts)
+                await AccountStore.DeleteAsync(account, AccountServiceName);
         }
 
         public virtual async Task<TAccount> RetrieveOAuthAccountFromSecureStore()
         {
-            if(await SecureStore.ContainsKey(AccountServiceName))
-                return await SecureStore.GetObject<TAccount>(AccountServiceName);
+            var accounts = await AccountStore.FindAccountsForServiceAsync(AccountServiceName);
+            if (accounts.Any())
+            {
+                var properties = (IDictionary<string, string>)accounts.FirstOrDefault().Properties;
+                return (TAccount)properties;
+            }
+
             return default(TAccount);
         }
 
-        public virtual async Task SaveAccountInSecureStore(TAccount account)
+        public virtual void SaveAccountInSecureStore(TAccount account)
         {
-            await SecureStore.InsertObject(AccountServiceName, account);
+            var authAccount = new Xamarin.Auth.Account(account.Id, account);
+            this.AccountStore.Save(authAccount, AccountServiceName);
         }
 
         protected virtual void Log(Exception exception)
