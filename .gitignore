@@ -29,6 +29,7 @@ test-results/
 Thumbs.db
 .droidres/
 .vs/
+.mfractor/
 
 # Mac bundle stuff
 *.dmg
