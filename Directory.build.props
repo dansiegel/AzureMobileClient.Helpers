@@ -19,9 +19,10 @@
     <VersionPrefix Condition=" '$(BUILD_BUILDNUMBER)' != '' ">$(VersionPrefix).$(BUILD_BUILDNUMBER)</VersionPrefix>
     <VersionSuffix Condition=" '$(BUILD_BUILDNUMBER)' != '' ">ci</VersionSuffix>
     <VersionSuffix Condition=" '$(IS_PREVIEW)' ">pre</VersionSuffix>
+    <IsTestProject>$(MSBuildProjectName.Contains('Test'))</IsTestProject>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' And '!$(IsTestProject)' ">
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
