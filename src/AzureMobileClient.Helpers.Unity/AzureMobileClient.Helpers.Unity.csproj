@@ -1,15 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
+    <TargetFrameworks>netstandard1.4;netstandard2.0</TargetFrameworks>
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wpa81+wp8</PackageTargetFallback>
     <PackageTitle>Azure Mobile Client Helpers for Unity</PackageTitle>
     <Title>Azure Mobile Mobile Client Helpers for Unity</Title>
+    <Product>$(AssemblyName) ($(TargetFramework))</Product>
     <Description>Provides a reusable set of abstractions and classes for using the Microsoft Azure Mobile Client.</Description>
     <PackageTags>microsoft;windows;azure;mobile;apps;services;unity;</PackageTags>
     <!-- Workaround until Xamarin supports PPDB -->
     <DebugType>full</DebugType>
   </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.4' ">
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AzureMobileClient.Helpers\AzureMobileClient.Helpers.csproj" />

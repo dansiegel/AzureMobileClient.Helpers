@@ -1,12 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
+    <TargetFrameworks>netstandard1.4;netstandard2.0</TargetFrameworks>
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wpa81+wp8</PackageTargetFallback>
+    <Product>$(AssemblyName) ($(TargetFramework))</Product>
     <PackageTitle>Azure Mobile Client Helpers for Azure Active Directory</PackageTitle>
     <Title>Azure Mobile Mobile Client Helpers for Azure Active Directory</Title>
     <Description>Provides extensions to the AzureMobileClient.Helpers library for working with Azure Active Directory</Description>
   </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.4' ">
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.2.1" />
