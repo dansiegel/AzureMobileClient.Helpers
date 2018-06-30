@@ -101,7 +101,7 @@ namespace AzureMobileClient.Helpers
         public override bool Equals(object obj)
         {
             var entityB = obj as IEntityData;
-            return string.Equals(Id.Trim(), entityB.Id.Trim(), StringComparison.OrdinalIgnoreCase);
+            return string.Equals(Id?.Trim(), entityB.Id?.Trim(), StringComparison.OrdinalIgnoreCase);
         }
 
         /// <inheritDoc />
