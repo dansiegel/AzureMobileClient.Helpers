@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
@@ -15,6 +15,6 @@
     <ProjectReference Include="..\AzureMobileClient.Helpers\AzureMobileClient.Helpers.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Unity" Version="5.7.3" />
+    <PackageReference Include="Unity.Container" Version="5.8.6" />
   </ItemGroup>
 </Project>
