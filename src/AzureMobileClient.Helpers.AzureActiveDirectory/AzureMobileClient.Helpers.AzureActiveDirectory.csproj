@@ -6,11 +6,12 @@
     <PackageTitle>Azure Mobile Client Helpers for Azure Active Directory</PackageTitle>
     <Title>Azure Mobile Mobile Client Helpers for Azure Active Directory</Title>
     <Description>Provides extensions to the AzureMobileClient.Helpers library for working with Azure Active Directory</Description>
+    <VersionSuffix Condition=" '$(IS_RELEASE)' == 'true' ">pre</VersionSuffix>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.2.4" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="1.1.2-preview0008" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="1.1.4-preview0002" />
   </ItemGroup>
 
   <ItemGroup>
