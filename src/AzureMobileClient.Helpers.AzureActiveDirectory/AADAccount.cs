@@ -222,6 +222,6 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
         /// Checks the validity.
         /// </summary>
         /// <returns>The validity.</returns>
-        public virtual Task<bool> CheckValidity() => Task.FromResult(IsValid);
+        public virtual Task<bool> CheckValidityAsync() => Task.FromResult(IsValid);
     }
 }

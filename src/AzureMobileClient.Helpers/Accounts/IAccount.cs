@@ -50,6 +50,6 @@ namespace AzureMobileClient.Helpers.Accounts
         /// Checks the validity.
         /// </summary>
         /// <returns>The validity.</returns>
-        Task<bool> CheckValidity();
+        Task<bool> CheckValidityAsync();
     }
 }
