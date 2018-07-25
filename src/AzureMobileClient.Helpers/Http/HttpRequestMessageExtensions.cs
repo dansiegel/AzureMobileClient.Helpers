@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace AzureMobileClient.Helpers.Http
 {
+    /// <summary>
+    /// Extensions for the <see cref="HttpRequestMessage"/>
+    /// </summary>
     public static class HttpRequestMessageExtensions
     {
         /// <summary>

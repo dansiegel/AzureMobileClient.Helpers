@@ -65,6 +65,7 @@ namespace AzureMobileClient.Helpers
         public virtual async Task<T> ReadItemAsync(string id)
             => await table.LookupAsync(id);
 
+        /// <inheritDoc />
         public virtual async Task<T> ReadItemAsync(Expression<System.Func<T, bool>> predicate) =>
             (await table.Where(predicate).Take(1).ToListAsync()).FirstOrDefault();
 
@@ -74,6 +75,7 @@ namespace AzureMobileClient.Helpers
             return await table.Skip(start).Take(count).ToListAsync();
         }
 
+        /// <inheritDoc />
         public virtual async Task<ICollection<T>> ReadItemsAsync(Expression<System.Func<T, bool>> predicate) =>
             await table.Where(predicate).ToListAsync();
 

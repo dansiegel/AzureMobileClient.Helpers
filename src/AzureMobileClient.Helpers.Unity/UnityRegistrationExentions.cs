@@ -5,19 +5,19 @@ using System.Reflection;
 namespace AzureMobileClient.Helpers
 {
     /// <summary>
-    /// Provides registration extensions for DryIoc
-    /// <summary>
+    /// Provides registration extensions for Unity
+    /// </summary>
     public static class UnityRegistrationExtensions
     {
         /// <summary>
-        /// Registers the default <see cref="AzureCloudSyncTable<>" /> implementation for sync tables
+        /// Registers the default <see cref="AzureCloudSyncTable{T}" /> implementation for sync tables
         /// </summary>
         public static IUnityContainer RegisterSyncTableProvider(this IUnityContainer container) =>
             container.RegisterSyncTableProvider(typeof(AzureCloudSyncTable<>));
 
         /// <summary>
-        /// Registers your custom implementation of <see cref="ICloudSyncTable<>" />
-        /// <summary>
+        /// Registers your custom implementation of <see cref="ICloudSyncTable{T}" />
+        /// </summary>
         public static IUnityContainer RegisterSyncTableProvider(this IUnityContainer container, Type type)
         {
             if (type == null)
@@ -40,13 +40,13 @@ namespace AzureMobileClient.Helpers
         }
 
         /// <summary>
-        /// Registers the default <see cref="AzureCloudTable<>" /> table provider
+        /// Registers the default <see cref="AzureCloudTable{T}" /> table provider
         /// </summary>
         public static IUnityContainer RegisterTableProvider(this IUnityContainer container) =>
             container.RegisterSyncTableProvider(typeof(AzureCloudTable<>));
 
         /// <summary>
-        /// Registers your custom implementation of <see cref="ICloudTable<>" />
+        /// Registers your custom implementation of <see cref="ICloudTable{T}" />
         /// </summary>
         public static IUnityContainer RegisterTableProvider(this IUnityContainer container, Type type)
         {

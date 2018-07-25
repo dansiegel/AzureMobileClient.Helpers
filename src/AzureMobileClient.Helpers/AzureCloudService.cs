@@ -14,7 +14,7 @@ using AzureMobileClient.Helpers.Http;
 namespace AzureMobileClient.Helpers
 {
     /// <summary>
-    /// AzureCloudService implementation of <see cref="ICloudService" />
+    /// AzureCloudService implementation of <see cref="ICloudService{TAccount}" />
     /// </summary>
     public class AzureCloudService<TAccount> : ICloudService<TAccount>
         where TAccount : IAccount
@@ -28,7 +28,7 @@ namespace AzureMobileClient.Helpers
         private List<AppServiceIdentity> identities = null;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="AzureCloudService" />
+        /// Initializes a new instance of <see cref="AzureCloudService{TAccount}" />
         /// </summary>
         public AzureCloudService(IAzureCloudServiceOptions options, ILoginProvider<TAccount> loginProvider)
         {
@@ -53,6 +53,11 @@ namespace AzureMobileClient.Helpers
         /// <inheritDoc />
         public IMobileServiceClient Client { get; }
 
+        /// <summary>
+        /// Creates a new <see cref="IMobileServiceClient"/>
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
         protected virtual IMobileServiceClient CreateMobileServiceClient(IAzureCloudServiceOptions options)
         {
             return new MobileServiceClient(options.AppServiceEndpoint, GetHandlers());

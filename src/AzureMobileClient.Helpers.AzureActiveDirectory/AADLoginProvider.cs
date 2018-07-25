@@ -9,13 +9,28 @@ using Newtonsoft.Json.Linq;
 
 namespace AzureMobileClient.Helpers.AzureActiveDirectory
 {
+    /// <summary>
+    /// An extension of the <see cref="AADLoginProvider{TAccount}"/> using an <see cref="AADAccount"/>
+    /// </summary>
     public abstract class AADLoginProvider : AADLoginProvider<AADAccount>
     {
+        /// <summary>
+        /// Creates an instance of the <see cref="AADLoginProvider"/>
+        /// </summary>
+        /// <param name="client">The <see cref="IPublicClientApplication"/></param>
+        /// <param name="parent">The <see cref="UIParent"/>. Only used on Android</param>
+        /// <param name="options">The <see cref="IAADOptions"/></param>
         public AADLoginProvider(IPublicClientApplication client, UIParent parent, IAADOptions options)
             : base(client, parent, options)
         {
         }
 
+        /// <summary>
+        /// Creates a <see cref="AADAccount"/> based on the provided token.
+        /// </summary>
+        /// <param name="token">The token</param>
+        /// <param name="mobileServiceClientToken">The mobile service client token</param>
+        /// <returns></returns>
         protected override AADAccount CreateAccountFromToken(string token, string mobileServiceClientToken = null) =>
             new AADAccount(token)
             {
@@ -23,15 +38,34 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
             };
     }
 
+    /// <summary>
+    /// Provides a generic <see cref="ILoginProvider{TAccount}"/> for Azure Active Directory
+    /// </summary>
+    /// <typeparam name="TAccount"></typeparam>
     public abstract class AADLoginProvider<TAccount> : LoginProviderBase<TAccount>
         where TAccount : AADAccount
     {
+        /// <summary>
+        /// The <see cref="IPublicClientApplication"/>
+        /// </summary>
         protected IPublicClientApplication _client { get; }
 
+        /// <summary>
+        /// The <see cref="UIParent"/> used by Android
+        /// </summary>
         protected UIParent _parent { get; }
 
+        /// <summary>
+        /// The <see cref="IAADOptions"/>
+        /// </summary>
         protected IAADOptions _options { get; }
 
+        /// <summary>
+        /// Creates an instance of the <see cref="AADLoginProvider{TAccount}"/>
+        /// </summary>
+        /// <param name="client">The <see cref="IPublicClientApplication"/></param>
+        /// <param name="parent">The <see cref="UIParent"/></param>
+        /// <param name="options">The <see cref="IAADOptions"/></param>
         public AADLoginProvider(IPublicClientApplication client, UIParent parent, IAADOptions options)
             : base()
         {
@@ -44,6 +78,11 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
 #endif
         }
 
+        /// <summary>
+        /// Performs the login with the <see cref="IMobileServiceClient"/>
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
         public override async Task<TAccount> LoginAsync(IMobileServiceClient client)
         {
             var account = await RetrieveOAuthAccountFromSecureStore();
@@ -54,6 +93,12 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
             return await LoginFromAccountAsync(account, client);
         }
 
+        /// <summary>
+        /// Logs in with a specified <see cref="AADAccount"/>
+        /// </summary>
+        /// <param name="account">The <see cref="AADAccount"/> to use</param>
+        /// <param name="client">The <see cref="IMobileServiceClient"/></param>
+        /// <returns></returns>
         protected virtual async Task<TAccount> LoginFromAccountAsync(TAccount account, IMobileServiceClient client)
         {
             if (account.IsValid && account.MobileServiceClientTokenExpires >= DateTime.Now.AddMinutes(30))
@@ -86,6 +131,11 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
             return await LoginUnknownUserAsync(client);
         }
 
+        /// <summary>
+        /// Logs in with an unknown users.
+        /// </summary>
+        /// <param name="client">The <see cref="IMobileServiceClient"/></param>
+        /// <returns></returns>
         protected virtual async Task<TAccount> LoginUnknownUserAsync(IMobileServiceClient client)
         {
             var accessToken = await LoginADALAsync();
@@ -95,6 +145,12 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
             return account;
         }
 
+        /// <summary>
+        /// Authenticates given a specified token
+        /// </summary>
+        /// <param name="client">The <see cref="IMobileServiceClient"/></param>
+        /// <param name="aadToken">The token</param>
+        /// <returns></returns>
         protected virtual async Task<string> AuthenticateMobileClientAsync(IMobileServiceClient client, string aadToken)
         {
             var zumoPayload = new JObject

@@ -6,7 +6,7 @@ using Microsoft.WindowsAzure.MobileServices.Sync;
 namespace AzureMobileClient.Helpers
 {
     /// <summary>
-    /// Provides a base implementation for <see cref="ICloudService" /> and <see cref="ICloudAppContext" />
+    /// Provides a base implementation for <see cref="ICloudService{TAccount}" /> and <see cref="ICloudAppContext" />
     /// </summary>
     public abstract class AzureCloudServiceContext<TAccount> : AzureCloudService<TAccount>, ICloudAppContext
         where TAccount : IAccount
@@ -17,7 +17,7 @@ namespace AzureMobileClient.Helpers
         protected const string _offlineDbPath = "azureCloudAppContext.db";
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AzureCloudServiceContext(IAzureCloudServiceOptions, ILoginProvider, string)" />
+        /// Initializes a new instance of the <see cref="AzureCloudServiceContext{TAccount}"/>
         /// </summary>
         public AzureCloudServiceContext(IAzureCloudServiceOptions options, ILoginProvider<TAccount> loginProvider, string offlineDbPath = _offlineDbPath) 
             : base(options, loginProvider)

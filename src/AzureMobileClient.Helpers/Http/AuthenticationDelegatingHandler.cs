@@ -18,10 +18,13 @@ namespace AzureMobileClient.Helpers.Http
     {
         const string ZumoAuthHeader = "X-ZUMO-AUTH";
 
+        /// <summary>
+        /// The <see cref="ICloudService{TAccount}"/> used by the Handler
+        /// </summary>
         protected ICloudService<TAccount> _cloudService { get; }
 
         /// <summary>
-        /// Initializes the <see cref="AuthenticationDelegatingHandler" />
+        /// Initializes the <see cref="AuthenticationDelegatingHandler{TAccount}" />
         /// </summary>
         public AuthenticationDelegatingHandler(ICloudService<TAccount> cloudService)
         {

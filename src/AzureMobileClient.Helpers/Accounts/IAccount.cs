@@ -36,8 +36,14 @@ namespace AzureMobileClient.Helpers.Accounts
         /// <value>The access token.</value>
         string AccessToken { get; set; }
 
+        /// <summary>
+        /// The token for the Mobile Service Client
+        /// </summary>
         string MobileServiceClientToken { get; set; }
 
+        /// <summary>
+        /// The expiration of the <see cref="MobileServiceClientToken"/>
+        /// </summary>
         DateTime MobileServiceClientTokenExpires { get; set; }
 
         /// <summary>

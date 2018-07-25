@@ -5,7 +5,7 @@ using Microsoft.WindowsAzure.MobileServices;
 namespace AzureMobileClient.Helpers
 {
     /// <summary>
-    /// Provides a base implementation for <see cref="ICloudService" /> and <see cref="ICloudAppContext" />
+    /// Provides a base implementation for <see cref="ICloudService{TAccount}" /> and <see cref="ICloudAppContext" />
     /// </summary>
     public abstract class DryIocCloudServiceContext<TAccount> : AzureCloudServiceContext<TAccount>
         where TAccount : IAccount
@@ -16,7 +16,7 @@ namespace AzureMobileClient.Helpers
         protected IContainer Container { get; } 
 
         /// <summary>
-        /// Constructs a new <see cref="DryIocCloudServiceContext" />
+        /// Constructs a new <see cref="DryIocCloudServiceContext{TAccount}" />
         /// </summary>
         public DryIocCloudServiceContext(IContainer container, IAzureCloudServiceOptions options, ILoginProvider<TAccount> loginProvider, string offlineDbPath = _offlineDbPath)
             : base(options, loginProvider, offlineDbPath)

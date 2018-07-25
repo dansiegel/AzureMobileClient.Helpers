@@ -5,8 +5,8 @@ using Microsoft.WindowsAzure.MobileServices.Sync;
 namespace AzureMobileClient.Helpers
 {
     /// <summary>
-    /// AzureCloudAppContext provides a base context for accessing your <see cref="ICloudTable" /> and
-    /// <see cref="ICloudSyncTable" />
+    /// AzureCloudAppContext provides a base context for accessing your <see cref="ICloudTable{T}" /> and
+    /// <see cref="ICloudSyncTable{T}" />
     /// </summary>
     public abstract class AzureCloudAppContext : ICloudAppContext
     {

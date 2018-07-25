@@ -5,7 +5,7 @@ using AzureMobileClient.Helpers.Accounts;
 namespace AzureMobileClient.Helpers
 {
     /// <summary>
-    /// Provides a base implementation for <see cref="ICloudService" /> and <see cref="ICloudAppContext" />
+    /// Provides a base implementation for <see cref="ICloudService{TAccount}" /> and <see cref="ICloudAppContext" />
     /// </summary>
     public abstract class SimpleInjectorCloudServiceContext<TAccount> : AzureCloudServiceContext<TAccount>
         where TAccount : IAccount
@@ -16,7 +16,7 @@ namespace AzureMobileClient.Helpers
         protected Container Container { get; }
 
         /// <summary>
-        /// Constructs a new <see cref="SimpleInjectorCloudServiceContext" />
+        /// Constructs a new <see cref="SimpleInjectorCloudServiceContext{TAccount}" />
         /// </summary>
         public SimpleInjectorCloudServiceContext(Container container, IAzureCloudServiceOptions options, ILoginProvider<TAccount> loginProvider, string offlineDbPath = _offlineDbPath)
             : base(options, loginProvider, offlineDbPath)

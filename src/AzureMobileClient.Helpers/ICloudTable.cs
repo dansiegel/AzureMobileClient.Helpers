@@ -20,6 +20,11 @@ namespace AzureMobileClient.Helpers
         /// </summary>
         Task<T> ReadItemAsync(string id);
 
+        /// <summary>
+        /// Reads all items given a specified predicate
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
         Task<T> ReadItemAsync(Expression<System.Func<T, bool>> predicate);
 
         /// <summary>
@@ -37,6 +42,11 @@ namespace AzureMobileClient.Helpers
         /// </summary>
         Task<ICollection<T>> ReadAllItemsAsync();
 
+        /// <summary>
+        /// Reads all items given a specified predicate
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
         Task<ICollection<T>> ReadItemsAsync(Expression<System.Func<T, bool>> predicate);
 
         /// <summary>
