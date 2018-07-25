@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.4;netstandard2.0</TargetFrameworks>
-    <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wpa81+wp8</PackageTargetFallback>
     <PackageTitle>Azure Mobile Client Helpers for SimpleInjector</PackageTitle>
     <Title>Azure Mobile Mobile Client Helpers for SimpleInjector</Title>
     <Description>Provides a reusable set of abstractions and classes for using the Microsoft Azure Mobile Client.</Description>
