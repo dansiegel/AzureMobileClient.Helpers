@@ -51,7 +51,7 @@ namespace AzureMobileClient.Helpers
 
         protected virtual void Log(Exception exception)
         {
-
+            Console.WriteLine(exception);
         }
     }
 }

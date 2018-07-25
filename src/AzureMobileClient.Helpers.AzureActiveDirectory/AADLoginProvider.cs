@@ -37,7 +37,11 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
         {
             _client = client;
             _options = options;
+
+#if MONOANDROID
+            // Only MonoAndroid uses the UI Parent
             _parent = parent;
+#endif
         }
 
         public override async Task<TAccount> LoginAsync(IMobileServiceClient client)
@@ -93,8 +97,10 @@ namespace AzureMobileClient.Helpers.AzureActiveDirectory
 
         protected virtual async Task<string> AuthenticateMobileClientAsync(IMobileServiceClient client, string aadToken)
         {
-            var zumoPayload = new JObject();
-            zumoPayload["access_token"] = aadToken;
+            var zumoPayload = new JObject
+            {
+                ["access_token"] = aadToken
+            };
             var user = await client.LoginAsync(MobileServiceAuthenticationProvider.WindowsAzureActiveDirectory, zumoPayload);
             return user.MobileServiceAuthenticationToken;
         }
